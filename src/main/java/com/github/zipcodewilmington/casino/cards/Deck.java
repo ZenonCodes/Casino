@@ -1,10 +1,15 @@
 package com.github.zipcodewilmington.casino.cards;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Deck {
+
+
     public static ArrayList<Cards> cardDeck = new ArrayList<>();
+
+
 
 
     //Methods
@@ -29,7 +34,7 @@ public class Deck {
                     ) {cardDeck.add(new Cards(rank, Suit.CLUBS, i++));
                     }i = 1;
             }
-
+            System.out.println(cardDeck);
         } return cardDeck;
     }
 
@@ -40,12 +45,8 @@ public class Deck {
 
     @Override
     public String toString() {
-        StringBuilder str  = new StringBuilder();
-        for (Cards cards : cardDeck) {
-            str.append(cards);
-        }
-            return null;
-        }
+        return "Deck{}";
+    }
 
 //        return "Cards{" +
 //                "suit=" + Suit.suit +

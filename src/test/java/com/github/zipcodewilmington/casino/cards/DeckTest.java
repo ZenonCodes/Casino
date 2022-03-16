@@ -13,7 +13,6 @@ class DeckTest {
 
     @Test
     void createDeck() {
-        Cards deck = new Cards(Rank.ACE, Suit.CLUBS, 14);
         int expected = 52;
         ArrayList<Cards> actualCards = Deck.createDeck();
         int actual = actualCards.size();
@@ -24,7 +23,6 @@ class DeckTest {
 
     @Test
     void testShuffle() {
-        Cards card = new Cards(Rank.ACE, Suit.CLUBS, 14);
         ArrayList<Cards> actualCards = Deck.createDeck();
         Collections.shuffle(actualCards);
         System.out.println(actualCards);
@@ -32,8 +30,7 @@ class DeckTest {
 
     @Test
     void testToString() {
-        Cards cards = new Cards(Rank.ACE, Suit.CLUBS, 14);
         ArrayList<Cards> actualCards = Deck.createDeck();
-        System.out.println(actualCards);
+        System.out.println(Arrays.deepToString(actualCards.toArray()));
     }
 }
