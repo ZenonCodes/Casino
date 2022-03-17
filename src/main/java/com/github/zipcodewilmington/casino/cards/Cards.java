@@ -22,6 +22,14 @@ public class Cards {
     public void setTier(int tier) {
         this.tier = tier;
     }
+
+    public Suit getSuit() {
+        return suit;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
 }
 
 
