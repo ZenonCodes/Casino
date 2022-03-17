@@ -9,6 +9,7 @@ import com.github.zipcodewilmington.casino.Player;
 public class NumberGuessPlayer extends Player {
     @Override
     public CasinoAccount getCasinoAccount() {
+
         return null;
     }
 

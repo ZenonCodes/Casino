@@ -65,6 +65,6 @@ public class NumberGuessGame implements GameInterface<NumberGuessPlayer> {
 
     @Override
     public void run() {
-
+        numberGuessgame();
     }
 }
