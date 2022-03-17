@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.*;
 
 public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // ROUGH DRAFT
+    // player logs in, enters game, selects second player option and chooses player already in game
 
     Boolean isCardGame = true;
 
@@ -20,34 +21,6 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
 
     public static void main(String[] args) { // I don't think I need a main method here as the game will be initiated in another class.
         WarGame wargame = new WarGame();
-        wargame.warGame();
-    }
-
-    public void warGame() {
-        // assign players
-        String player1 = "PLAYER1"; // update this piece
-        String player2 = "PLAYER2"; // update this piece
-
-        // create decks and deal cards
-        ArrayDeque<Cards> deck = generateWarDeck();
-        for (int i = 1; i <= 26; i++) {
-            handPlayer1.addFirst(deck.removeFirst());
-            handPlayer2.addFirst(deck.removeFirst());
-        }
-
-        // gameplay
-        while (handPlayer1.size() < 52 && handPlayer2.size() < 52) {
-            Cards player1Card = handPlayer1.removeFirst();
-            Cards player2Card = handPlayer2.removeFirst();
-            compareAndRedistribute(player1Card, player2Card);
-        }
-
-        // declare a winner
-        if (handPlayer1.size() == 0) {
-            // PLAYER2 WINS
-        } else if (handPlayer2.size() == 0) {
-            // PLAYER1 WINS
-        }
     }
 
 
@@ -68,20 +41,27 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
         return deck;
     }
 
-    public ArrayList<Cards> createWarDeck() {
+    public ArrayList<Cards> createWarDeck() { // tested
         Deck deck = new Deck();
         ArrayList<Cards> unShuffledWarDeck = deck.createDeck();
         return unShuffledWarDeck;
     }
 
-    public ArrayList<Cards> shuffle(ArrayList<Cards> inputDeck) {
+    public ArrayList<Cards> shuffle(ArrayList<Cards> inputDeck) { // tested
         Collections.shuffle(inputDeck);
         return inputDeck;
     }
 
-    public ArrayDeque<Cards> convertDeckToDeque(ArrayList<Cards> inputDeck) {
+    public ArrayDeque<Cards> convertDeckToDeque(ArrayList<Cards> inputDeck) { // no test
         ArrayDeque<Cards> convertedDeck = new ArrayDeque<>(inputDeck);
         return convertedDeck;
+    }
+
+    public void deal(ArrayDeque<Cards> deck) {
+        for (int i = 1; i <= 26; i++) {
+            handPlayer1.addFirst(deck.removeFirst());
+            handPlayer2.addFirst(deck.removeFirst());
+        }
     }
 
     public void distributeTemporaryCards(Deque<Cards> handOfWinner) {
@@ -181,6 +161,26 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
 
     @Override
     public void run() {
+        // assign players
+        String player1 = "PLAYER1"; // update this piece
+        String player2 = "PLAYER2"; // update this piece
 
+        ArrayDeque<Cards> deck = generateWarDeck(); // generates shuffled card deck
+        deal(deck); // deals the cards
+
+        // gameplay
+        while (handPlayer1.size() < 52 && handPlayer2.size() < 52) {
+            Cards player1Card = handPlayer1.removeFirst();
+            Cards player2Card = handPlayer2.removeFirst();
+            compareAndRedistribute(player1Card, player2Card);
+        }
+
+        // declare a winner
+        if (handPlayer1.size() == 0) {
+            // PLAYER2 WINS
+        } else if (handPlayer2.size() == 0) {
+            // PLAYER1 WINS
+
+        }
     }
 }
