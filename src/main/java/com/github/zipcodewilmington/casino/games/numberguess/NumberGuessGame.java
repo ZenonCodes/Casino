@@ -12,43 +12,35 @@ public class NumberGuessGame implements GameInterface<NumberGuessPlayer> {
 
     Scanner scanner = new Scanner(System.in); //Scanner Class
     int num = 1 + (int) (10 * Math.random());// Computer Choice
-    int guessCount = 0;
-    int previousGuess = 11;
+    boolean isOver = false;
+
+
     //Actual Game
-        while(true)
-
-    {
-
-        {
+    public void numberGuessgame(){
+        do {
             System.out.println("Pick a number between 1 and 10");
             int guess = scanner.nextInt();
             if (guess == num) {
-                guessCount += 1;
-                System.out.println("Congratulations! You guessed the number!");
-                System.out.println("You guessed in" + " " + guessCount + " " + "tries!");
-                break;
+                System.out.println("Jackpot!!!!!!!");
+                isOver();
             } else if (guess > num) {
-                System.out.println("Guess is too high, pick again");
-                if (previousGuess != guess) {
-                    guessCount += 1;
-                    previousGuess = guess;
-                }
+                System.out.println("Guess is too high, you lose, the house wins...");
+               isOver();
             } else {
-                System.out.println("Guess is too low, pick again");
-                if (previousGuess != guess) {
-                    guessCount += 1;
-                    previousGuess = guess;
-                }
+                System.out.println("Guess is too low, you lose, the house wins...");
+                isOver();
             }
             scanner.close();
-        }
+    } while(isOver);
+
     }
 
 
 
     @Override
     public Boolean isOver() {
-        return null;
+        isOver = true;
+        return true;
     }
 
     @Override
