@@ -25,8 +25,8 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
     Boolean isCardGame = true;
     ArrayDeque<Cards> handPlayer = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handDealer = new ArrayDeque<Cards>();
-    int sumPlayer = 0; // TODO - clear at end???
-    int sumDealer = 0; // TODO - clear at end???
+    Integer[] sumPlayer = {0}; // TODO - clear at end???
+    Integer[] sumDealer = {0}; // TODO - clear at end???
 
     public static void main(String[] args) {
         BlackJackGame blackJackGame = new BlackJackGame();
@@ -37,11 +37,15 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
         blackJackGame.deal(deck);
 
+        // sum starting hands
+        blackJackGame.sumStartingCards(); // TODO - test sumSTartingCards
+
         // gameplay
         // TODO - code how game ends (while loop?) - need to loop thru this so can hit multiple times
         // TODO - write code for if starting player hand is 21
         // sum cards -- might have to adjust hit method and test to include sum adjustment
         // if 1 person has 21 vs both vs neither
+        // TODO - how to handle ACE??? -- maybe option to add 10 later???
         String playerInput = getStringInput("HIT or STAND");
         if (playerInput.equals("HIT")) {
             blackJackGame.hit(blackJackGame.handPlayer, deck);
@@ -49,6 +53,7 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         // if hit vs if stand
         // It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any
         // other card is its pip value.
+        // TODO - put sum method up here and test
     }
 
     // =============== SUB-METHODS ===============
@@ -108,15 +113,26 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         System.out.println("NEW CARD: " + rankNewCard + " " + suitNewCard);
     }
 
-    public void addCardToSum(Cards cardToBeAdded, int sumToAddTo) {
+    public void addCardToSum(Cards cardToBeAdded, Integer[] sumToAddTo) {
         int tier = cardToBeAdded.getTier();
         if (tier <= 8) { // CARDS 2-9
-            sumToAddTo += (tier + 1);
+            sumToAddTo[0] += (tier + 1);
         } else if (tier > 8 && tier < 13) { // CARDS 10-KING
-            sumToAddTo += 10;
+            sumToAddTo[0] += 10;
+        } else if (tier == 13) { // ACE
+            sumToAddTo[0] += 1;
         }
-        // TODO - how to handle ACE???
+    }
 
+    public void sumStartingCards() {
+        Cards playerCard1 = handPlayer.peekFirst();
+        Cards playerCard2 = handPlayer.peekLast();
+        Cards dealerCard1 = handDealer.peekFirst();
+        Cards dealerCard2 = handDealer.peekLast();
+        addCardToSum(playerCard1, sumPlayer);
+        addCardToSum(playerCard2, sumPlayer);
+        addCardToSum(dealerCard1, sumDealer);
+        addCardToSum(dealerCard2, sumDealer);
     }
 
     @Override
