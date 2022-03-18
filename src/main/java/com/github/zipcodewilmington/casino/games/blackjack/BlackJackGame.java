@@ -18,9 +18,10 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
     Boolean isCardGame = true;
 
     public static void main(String[] args) {
+        BlackJackGame blackJackGame = new BlackJackGame();
         // TODO assign players (and tests)
         // generate and deal deck
-           // TODO generate (and tests)
+        blackJackGame.generateBlackJackDeck();
            // TODO deal (and tests)
     }
 
@@ -30,30 +31,30 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
 //        String userInput = scanner.nextLine();
 //        return userInput;
 //    }
-//
-//    public ArrayDeque<Cards> generateWarDeck() { // no test
-//        ArrayList<Cards> unShuffled = createWarDeck();
-//        ArrayList<Cards> shuffled = shuffle(unShuffled);
-//        ArrayDeque<Cards> deck = convertDeckToDeque(shuffled);
-//        return deck;
-//    }
-//
-//    public ArrayList<Cards> createWarDeck() { // tested
-//        Deck deck = new Deck();
-//        ArrayList<Cards> unShuffledWarDeck = deck.createDeck();
-//        return unShuffledWarDeck;
-//    }
-//
-//    public ArrayList<Cards> shuffle(ArrayList<Cards> inputDeck) { // tested
-//        Collections.shuffle(inputDeck);
-//        return inputDeck;
-//    }
-//
-//    public ArrayDeque<Cards> convertDeckToDeque(ArrayList<Cards> inputDeck) { // no test
-//        ArrayDeque<Cards> convertedDeck = new ArrayDeque<>(inputDeck);
-//        return convertedDeck;
-//    }
-//
+
+    public ArrayDeque<Cards> generateBlackJackDeck() { // no test
+        ArrayList<Cards> unShuffled = createBlackJackDeck();
+        ArrayList<Cards> shuffled = shuffle(unShuffled);
+        ArrayDeque<Cards> deck = convertDeckToDeque(shuffled);
+        return deck;
+    }
+
+    public ArrayList<Cards> createBlackJackDeck() { // tested
+        Deck deck = new Deck();
+        ArrayList<Cards> unShuffledDeck = deck.createDeck();
+        return unShuffledDeck;
+    }
+
+    public ArrayList<Cards> shuffle(ArrayList<Cards> inputDeck) { // tested
+        Collections.shuffle(inputDeck);
+        return inputDeck;
+    }
+
+    public ArrayDeque<Cards> convertDeckToDeque(ArrayList<Cards> inputDeck) { // no test
+        ArrayDeque<Cards> convertedDeck = new ArrayDeque<>(inputDeck);
+        return convertedDeck;
+    }
+
 //    public void deal(ArrayDeque<Cards> deck) { // tested
 //        for (int i = 1; i <= 26; i++) {
 //            handPlayer1.addFirst(deck.removeFirst());
