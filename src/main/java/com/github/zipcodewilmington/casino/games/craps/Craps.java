@@ -67,9 +67,9 @@ public class Craps {
     private static boolean getRules(Scanner scanner) {
         System.out.println("\nWould you like to learn how to play Craps? (Yes/No)");
         String replay = scanner.nextLine();
-        if (replay.equals("Yes")){
+        if (replay.equals("Yes")) {
             return gameObjectiveMessage();
-        } else if (replay.equals("No")){
+        } else if (replay.equals("No")) {
             return false;
         }
         return false;
@@ -100,13 +100,14 @@ public class Craps {
         System.out.println("\nWould you like to play Craps? (Yes/No)");
         String replay = scanner.nextLine();
 
-        if (replay.equals("Yes")){
+        if (replay.equals("Yes")) {
             return true;
-        } else if (replay.equals("No")){
+        } else if (replay.equals("No")) {
             return false;
         }
         return false;
     }
+}
 
 
 
