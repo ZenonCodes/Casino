@@ -1,9 +1,6 @@
 package com.github.zipcodewilmington;
 
-import com.github.zipcodewilmington.casino.CasinoAccount;
-import com.github.zipcodewilmington.casino.CasinoAccountManager;
-import com.github.zipcodewilmington.casino.GameInterface;
-import com.github.zipcodewilmington.casino.PlayerInterface;
+import com.github.zipcodewilmington.casino.*;
 import com.github.zipcodewilmington.casino.games.numberguess.NumberGuessGame;
 import com.github.zipcodewilmington.casino.games.numberguess.NumberGuessPlayer;
 import com.github.zipcodewilmington.casino.games.slots.SlotsGame;
@@ -31,9 +28,9 @@ public class Casino implements Runnable {
                 if (isValidLogin) {
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
                     if (gameSelectionInput.equals("SLOTS")) {
-                        play(new SlotsGame(), new SlotsPlayer());
+                        play(new SlotsGame(), new SlotsPlayer(), casinoAccount);
                     } else if (gameSelectionInput.equals("NUMBERGUESS")) {
-                        play(new NumberGuessGame(), new NumberGuessPlayer());
+                        play(new NumberGuessGame(), new NumberGuessPlayer(),casinoAccount);
                     } else {
                         // TODO - implement better exception handling
                         String errorMessage = "[ %s ] is an invalid game selection";
@@ -49,7 +46,7 @@ public class Casino implements Runnable {
                 String accountName = console.getStringInput("Enter your account name:");
                 String accountPassword = console.getStringInput("Enter your account password:");
                 CasinoAccount newAccount = casinoAccountManager.createAccount(accountName, accountPassword);
-                casinoAccountManager.registerAccount(newAccount);
+//                casinoAccountManager.registerAccount(newAccount);
             }
         } while (!"logout".equals(arcadeDashBoardInput));
     }
@@ -70,9 +67,10 @@ public class Casino implements Runnable {
                 .toString());
     }
 
-    private void play(Object gameObject, Object playerObject) {
-        GameInterface game = (GameInterface)gameObject;
-        PlayerInterface player = (PlayerInterface)playerObject;
+    private void play(GameInterface gameObject, Player playerObject, CasinoAccount casinoAccount) {
+        playerObject.casinoAccount = casinoAccount;
+        GameInterface game = gameObject;
+        Player player = playerObject;
         game.addPlayer(player);
         game.run();
     }

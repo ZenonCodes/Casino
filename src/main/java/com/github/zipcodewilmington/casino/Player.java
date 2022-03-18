@@ -1,11 +1,16 @@
 package com.github.zipcodewilmington.casino;
 
-import com.github.zipcodewilmington.casino.games.slots.SlotsPlayer;
 
-import java.util.Iterator;
 
 public abstract class Player implements PlayerInterface {
+    public CasinoAccount casinoAccount;
+    int accountBalance = casinoAccount.getAccountBalance();
+    Boolean isTurn;
 
+    @Override
+    public <SomeReturnType> SomeReturnType play() {
+        return null;
+    }
 
-
+    public abstract void run();
 }
