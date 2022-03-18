@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by leon on 7/21/2020.
  */
-public class SlotsGame implements GameInterface<SlotsPlayer> {
+public class SlotsGame extends WagingGame implements GameInterface<SlotsPlayer> {
 
     @Override
     public Boolean isOver() {

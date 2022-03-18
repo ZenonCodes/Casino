@@ -3,12 +3,20 @@ package com.github.zipcodewilmington.casino;
 import com.github.zipcodewilmington.casino.Player;
 import com.github.zipcodewilmington.casino.PlayerInterface;
 
-public abstract class WagingPlayer extends Player implements PlayerInterface {
+import java.util.Scanner;
+
+public abstract class WagingPlayer extends Player {
+    int bet;
+    Scanner scanner = new Scanner(System.in);
 
 
-    @Override
-    public <SomeReturnType> SomeReturnType play() {
-        return null;
+    public void setBet(){
+        System.out.println("How much would you like to wager? \n");
+        int bet = scanner.nextInt();
+    }
+
+    public int getBet(){
+        return bet;
     }
 
 }

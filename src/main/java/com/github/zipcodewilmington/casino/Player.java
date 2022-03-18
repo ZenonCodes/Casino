@@ -12,5 +12,4 @@ public abstract class Player implements PlayerInterface {
         return null;
     }
 
-    public abstract void run();
 }

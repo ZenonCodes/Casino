@@ -1,6 +1,7 @@
 package com.github.zipcodewilmington.casino.games.war;
 
 import com.github.zipcodewilmington.casino.CasinoAccount;
+import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.Player;
 import com.github.zipcodewilmington.casino.cards.Cards;
 import com.github.zipcodewilmington.casino.cards.Deck;
@@ -10,7 +11,7 @@ import com.github.zipcodewilmington.casino.cards.Suit;
 import java.util.Collections;
 import java.util.*;
 
-public class WarGame extends Player { // NON-GAMBLING // ROUGH DRAFT
+public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // ROUGH DRAFT
     // player logs in, enters game, selects second player option and chooses player already in game
 
     Boolean isCardGame = true;
@@ -151,6 +152,30 @@ public class WarGame extends Player { // NON-GAMBLING // ROUGH DRAFT
     }
 
 
+    @Override
+    public Boolean isOver() {
+        return null;
+    }
+
+    @Override
+    public void addPlayer(WarPlayer player) {
+
+    }
+
+    @Override
+    public void addPlayers(List<? extends WarPlayer> player) {
+
+    }
+
+    @Override
+    public void evaluateTurn(WarPlayer player) {
+
+    }
+
+    @Override
+    public void remove(WarPlayer player) {
+
+    }
 
     @Override
     public void run() {
@@ -180,8 +205,4 @@ public class WarGame extends Player { // NON-GAMBLING // ROUGH DRAFT
         }
     }
 
-    @Override
-    public CasinoAccount getCasinoAccount() {
-        return this.casinoAccount;
-    }
 }

@@ -22,8 +22,4 @@ public class SlotsPlayer extends Player{
         return null;
     }
 
-    @Override
-    public void run() {
-
-    }
 }

@@ -1,10 +1,11 @@
 package com.github.zipcodewilmington.casino.games.craps;
 
 import com.github.zipcodewilmington.casino.GameInterface;
+import com.github.zipcodewilmington.casino.WagingGame;
 
 import java.util.List;
 
-public class CrapsGame implements GameInterface<CrapsPlayer> {
+public class CrapsGame extends WagingGame implements GameInterface<CrapsPlayer> {
     Boolean isDiceGame = true;
 
     @Override

@@ -2,8 +2,9 @@ package com.github.zipcodewilmington.casino.games.blackjack;
 
 import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.Player;
+import com.github.zipcodewilmington.casino.WagingPlayer;
 
-public class BlackJackPlayer extends Player {
+public class BlackJackPlayer extends WagingPlayer {
     @Override
     public CasinoAccount getCasinoAccount() {
         return this.casinoAccount;
@@ -14,8 +15,5 @@ public class BlackJackPlayer extends Player {
         return null;
     }
 
-    @Override
-    public void run() {
 
-    }
 }

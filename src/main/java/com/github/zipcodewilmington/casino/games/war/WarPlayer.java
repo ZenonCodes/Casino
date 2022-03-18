@@ -14,8 +14,5 @@ public class WarPlayer extends Player {
         return null;
     }
 
-    @Override
-    public void run() {
 
-    }
 }
