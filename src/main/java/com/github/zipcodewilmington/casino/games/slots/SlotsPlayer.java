@@ -14,11 +14,16 @@ public class SlotsPlayer extends Player{
 
     @Override
     public CasinoAccount getCasinoAccount() {
-        return null;
+        return this.casinoAccount;
     }
 
     @Override
     public <SomeReturnType> SomeReturnType play() {
         return null;
+    }
+
+    @Override
+    public void run() {
+
     }
 }
