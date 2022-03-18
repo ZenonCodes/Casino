@@ -2,9 +2,7 @@ package com.github.zipcodewilmington.casino.cards;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import com.github.zipcodewilmington.casino.cards.Cards;
-import com.github.zipcodewilmington.casino.cards.Rank;
-import com.github.zipcodewilmington.casino.cards.Suit;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,9 +30,4 @@ class DeckTest {
         System.out.println(actualCards);
     }
 
-    @Test
-    void testToString() {
-        Cards cards = new Cards(Rank.ACE, Suit.CLUBS, 14);
-        ArrayList<Cards> actualCards = Deck.createDeck();
-    }
 }
