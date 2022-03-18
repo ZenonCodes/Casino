@@ -22,6 +22,7 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
     ArrayDeque<Cards> temporary = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handPlayer1 = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handPlayer2 = new ArrayDeque<Cards>();
+    int gameStatus = 0; // do I actually need this? --- useful within gameplay???
 
     public static void main(String[] args) { // I don't think I need a main method here as the game will be initiated in another class.
         WarGame wargame = new WarGame();
@@ -79,7 +80,7 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
         }
     }
 
-    public void addThreeCardsToTemporary(ArrayDeque<Cards> handOfPlayer) {
+    public void addThreeCardsToTemporary(ArrayDeque<Cards> handOfPlayer) { // tested
         temporary.addFirst(handOfPlayer.removeFirst());
         temporary.addFirst(handOfPlayer.removeFirst());
         temporary.addFirst(handOfPlayer.removeFirst());
@@ -97,11 +98,11 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
             handPlayer1.addLast(player2Card);
             distributeTemporaryCards(handPlayer1);
             System.out.println("Player 1: " + rank1 + " " + suit1); // rename players to account names
-            System.out.println("Player 2: " + rank2 + " " + suit2); // rename players to account names
+            System.out.println("Player 2: " + rank2 + " " + suit2 + "\n"); // rename players to account names
             System.out.println("Player 1 Wins This Round!" + "\n"); // rename players to account names
             System.out.println("Player 1 Has " + handPlayer1.size() + " cards."); // rename players
             // to account names
-            System.out.println("Player 2 Has " + handPlayer2.size() + " cards."); // rename players
+            System.out.println("Player 2 Has " + handPlayer2.size() + " cards." + "\n"); // rename players
             // to account names
 
         } else if (tierCard1 < tierCard2) {
@@ -109,21 +110,31 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
             handPlayer2.addLast(player2Card);
             distributeTemporaryCards(handPlayer2);
             System.out.println("Player 1: " + rank1 + " " + suit1); // rename players to account names
-            System.out.println("Player 2: " + rank2 + " " + suit2); // rename players to account names
+            System.out.println("Player 2: " + rank2 + " " + suit2 + "\n"); // rename players to account names
             System.out.println("Player 2 Wins This Round!" + "\n"); // rename players to account names
             System.out.println("Player 1 Has " + handPlayer1.size() + " cards."); // rename players
             // to account names
-            System.out.println("Player 2 Has " + handPlayer2.size() + " cards."); // rename players
+            System.out.println("Player 2 Has " + handPlayer2.size() + " cards." + "\n"); // rename players
             // to account names
 
-        } else if (tierCard1 == tierCard2) { // what if that was the last card for one of them?
-            if (handPlayer1.size() > 3 && handPlayer2.size() > 3) {
+        } else if (tierCard1 == tierCard2) {
+            System.out.println("Player 1: " + rank1 + " " + suit1); // rename players to account names
+            System.out.println("Player 2: " + rank2 + " " + suit2 + "\n"); // rename players to account names
+            if (handPlayer1.size() > 0 && handPlayer2.size() == 0) {
+                gameStatus = 1;
+                return;
+            } else if (handPlayer1.size() == 0 && handPlayer2.size() > 0) {
+                gameStatus = 1;
+                return;
+            } else if (handPlayer1.size() > 3 && handPlayer2.size() > 3) {
+                System.out.println("WAR!" + "\n");
                 temporary.addFirst(player1Card);
                 temporary.addFirst(player2Card);
                 addThreeCardsToTemporary(handPlayer1);
                 addThreeCardsToTemporary(handPlayer2);
                 return;
             } else if (handPlayer1.size() > 3 && handPlayer2.size() < 3) {
+                System.out.println("WAR!" + "\n");
                 temporary.addFirst(player1Card);
                 temporary.addFirst(player2Card);
                 addThreeCardsToTemporary(handPlayer1);
@@ -132,6 +143,7 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
                 }
                 return;
             } else if (handPlayer1.size() < 3 && handPlayer2.size() > 3) {
+                System.out.println("WAR!" + "\n");
                 temporary.addFirst(player1Card);
                 temporary.addFirst(player2Card);
                 addThreeCardsToTemporary(handPlayer2);
@@ -140,6 +152,7 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
                 }
                 return;
             } else {
+                System.out.println("WAR!" + "\n");
                 temporary.addFirst(player1Card);
                 temporary.addFirst(player2Card);
                 while (handPlayer1.size() > 1) {
@@ -180,8 +193,7 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
 
     @Override
     public void run() {
-        int gameStatus = 0; // do I actually need this? --- useful within gameplay???
-        while (gameStatus == 0) { // do I actually need this?
+        while (gameStatus == 0) { // do I actually need this? -- useful within gameplay???
             // assign players
             String player1 = "PLAYER1"; // TODO - work on this
             String player2 = "PLAYER2"; // TODO - work on this
