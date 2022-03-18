@@ -2,12 +2,14 @@ package com.github.zipcodewilmington.casino.cards;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import com.github.zipcodewilmington.casino.cards.Cards;
+import com.github.zipcodewilmington.casino.cards.Rank;
+import com.github.zipcodewilmington.casino.cards.Suit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class DeckTest {
 
