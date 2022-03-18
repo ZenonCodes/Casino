@@ -10,12 +10,14 @@ import com.github.zipcodewilmington.casino.games.war.WarPlayer;
 import java.util.Collections;
 import java.util.*;
 
+import static java.sql.DriverManager.println;
+
 public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // ROUGH DRAFT
     // player logs in, enters game, selects second player option and chooses player already in game
 
     Boolean isCardGame = true;
 
-    Scanner scanner = new Scanner(System.in);
+    // Scanner scanner = new Scanner(System.in);
 
     ArrayDeque<Cards> temporary = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handPlayer1 = new ArrayDeque<Cards>();
@@ -32,6 +34,13 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
     // player input/output???
 
     // ============================= SUB-METHODS =============================
+
+    public static String getStringInput(String prompt) { // no test
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(prompt);
+        String userInput = scanner.nextLine();
+        return userInput;
+    }
 
     public ArrayDeque<Cards> generateWarDeck() { // no test
         ArrayList<Cards> unShuffled = createWarDeck();
@@ -74,6 +83,12 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
         }
     }
 
+    public void addThreeCardsToTemporary(ArrayDeque<Cards> handOfPlayer) {
+        temporary.addFirst(handOfPlayer.removeFirst());
+        temporary.addFirst(handOfPlayer.removeFirst());
+        temporary.addFirst(handOfPlayer.removeFirst());
+    }
+
     public void compareAndRedistribute(Cards player1Card, Cards player2Card) {
         int tierCard1 = player1Card.getTier();
         int tierCard2 = player2Card.getTier();
@@ -109,19 +124,13 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
             if (handPlayer1.size() > 3 && handPlayer2.size() > 3) {
                 temporary.addFirst(player1Card);
                 temporary.addFirst(player2Card);
-                temporary.addFirst(handPlayer1.removeFirst()); // make sub-method w/ player parameter to...
-                temporary.addFirst(handPlayer1.removeFirst()); // ...move 3 cards to temp
-                temporary.addFirst(handPlayer1.removeFirst());
-                temporary.addFirst(handPlayer2.removeFirst());
-                temporary.addFirst(handPlayer2.removeFirst());
-                temporary.addFirst(handPlayer2.removeFirst());
+                addThreeCardsToTemporary(handPlayer1);
+                addThreeCardsToTemporary(handPlayer2);
                 return;
             } else if (handPlayer1.size() > 3 && handPlayer2.size() < 3) {
                 temporary.addFirst(player1Card);
                 temporary.addFirst(player2Card);
-                temporary.addFirst(handPlayer1.removeFirst());
-                temporary.addFirst(handPlayer1.removeFirst());
-                temporary.addFirst(handPlayer1.removeFirst());
+                addThreeCardsToTemporary(handPlayer1);
                 while (handPlayer2.size() > 1) {
                     temporary.addFirst(handPlayer2.removeFirst());
                 }
@@ -129,9 +138,7 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
             } else if (handPlayer1.size() < 3 && handPlayer2.size() > 3) {
                 temporary.addFirst(player1Card);
                 temporary.addFirst(player2Card);
-                temporary.addFirst(handPlayer2.removeFirst());
-                temporary.addFirst(handPlayer2.removeFirst());
-                temporary.addFirst(handPlayer2.removeFirst());
+                addThreeCardsToTemporary(handPlayer2);
                 while (handPlayer1.size() > 1) {
                     temporary.addFirst(handPlayer1.removeFirst());
                 }
@@ -189,9 +196,15 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
             Cards player1Card = handPlayer1.removeFirst();
             Cards player2Card = handPlayer2.removeFirst();
             compareAndRedistribute(player1Card, player2Card);
-            // sout play next hand?
-            // if yes - continue
-            // if no - break/exit;
+            String player1Input = getStringInput("Player 1: Input FLIP to flip the next card " +
+                    "or QUIT to exit the game.");
+            String player2Input = getStringInput("Player 2: Input FLIP to flip the next card " +
+                    "or QUIT to exit the game.");
+            if (player1Input.equals("FLIP") && player2Input.equals("FLIP")) {
+                // do nothing/continue
+            } else if (player1Input.equals("QUIT") || player2Input.equals("QUIT")) {
+                System.out.println("QUITTING"); // TODO - fix this so it redirects to game selection
+            }
         }
 
         // declare a winner
