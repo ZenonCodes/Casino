@@ -1,18 +1,23 @@
 package com.github.zipcodewilmington.casino.games.numberguess;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class NumberGuessGameTest {
-
+    private static final int number = 10;
     @Test
     void numberGuessgameTest() {
         //given
-        int expectedNumber = 10;
+
+
         //when
-        int actualNumber = 10;
+
+
         //then
+
+
     }
 
     @Test
