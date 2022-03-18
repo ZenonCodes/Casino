@@ -2,6 +2,8 @@ package com.github.zipcodewilmington.casino.games.blackjack;
 
 
 import com.github.zipcodewilmington.casino.GameInterface;
+import com.github.zipcodewilmington.casino.WagingGame;
+
 import com.github.zipcodewilmington.casino.cards.Cards;
 import com.github.zipcodewilmington.casino.cards.Deck;
 import com.github.zipcodewilmington.casino.cards.Rank;
@@ -21,7 +23,7 @@ import java.util.*;
 //--------- splitting pairs
 //--------- doubling down
 
-public class BlackJackGame implements GameInterface<BlackJackPlayer> {
+public class BlackJackGame extends WagingGame implements GameInterface<BlackJackPlayer> {
     Boolean isCardGame = true;
     ArrayDeque<Cards> handPlayer = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handDealer = new ArrayDeque<Cards>();

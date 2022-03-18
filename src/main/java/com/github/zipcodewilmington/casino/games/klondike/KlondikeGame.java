@@ -1,6 +1,7 @@
 package com.github.zipcodewilmington.casino.games.klondike;
 
 import com.github.zipcodewilmington.casino.GameInterface;
+import com.github.zipcodewilmington.casino.WagingGame;
 import com.github.zipcodewilmington.casino.dice.Dice;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class KlondikeGame implements GameInterface<KlondikePlayer> {
+public class KlondikeGame extends WagingGame implements GameInterface<KlondikePlayer> {
 
     /*
     given
