@@ -1,6 +1,7 @@
 package com.github.zipcodewilmington.casino.cards;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Deck {
@@ -35,24 +36,25 @@ public class Deck {
 
     public void shuffle(){
         Collections.shuffle(cardDeck);
-        System.out.println(cardDeck);
     }
 
     @Override
     public String toString() {
-        StringBuilder str  = new StringBuilder();
-        for (Cards cards : cardDeck) {
-            str.append(cards);
-        }
-            return null;
-        }
-
-//        return "Cards{" +
-//                "suit=" + Suit.suit +
+//         return "Cards{" +
+//               "suit=" + Suit. +
 //                ", rank=" + Rank.rank +
 //                ", tier=" + Cards.tier +
 //                ", cardDeck=" + cardDeck +
-//                '}';
+//               '}';
+
+        StringBuilder str  = new StringBuilder();
+        for (Cards cards : cardDeck) {
+           str.append(cards);
+        }
+            return " Card Deck: " + str;
+        }
+
+//
 
 
 

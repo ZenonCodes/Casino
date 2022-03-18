@@ -34,6 +34,5 @@ class DeckTest {
     void testToString() {
         Cards cards = new Cards(Rank.ACE, Suit.CLUBS, 14);
         ArrayList<Cards> actualCards = Deck.createDeck();
-        System.out.println(actualCards);
     }
 }

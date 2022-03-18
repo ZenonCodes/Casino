@@ -11,26 +11,35 @@ import java.util.Scanner;
 public class NumberGuessGame implements GameInterface<NumberGuessPlayer> {
 
     Scanner scanner = new Scanner(System.in); //Scanner Class
-    int num = 1 + (int) (10 * Math.random());// Computer Choice
-    boolean isOver = false;
+    private final int num = 1 + (int) (10 * Math.random());// Computer Choice
+    public static final String MSG_WINNER = "Jackpot!!!!!";
+    public static final String MSG_TOO_HIGH = "Guess too high, the house wins!";
+    public static final String MSG_TOO_LOW = "Guess too low, the house wins!";
+    private boolean isOver = false;
+
+
 
 
     //Actual Game
-    public void numberGuessgame(){
+    public String numberGuessgame(){
         do {
             System.out.println("Pick a number between 1 and 10");
             int guess = scanner.nextInt();
-            if (guess == num) {
-                System.out.println("Jackpot!!!!!!!");
-                isOver();
-            } else if (guess > num) {
-                System.out.println("Guess is too high, you lose, the house wins...");
-               isOver();
-            } else {
-                System.out.println("Guess is too low, you lose, the house wins...");
-                isOver();
-            }
             scanner.close();
+            if (guess == num) {
+                this.isOver = true;
+                return MSG_WINNER;
+
+            } else if (guess > num) {
+                this.isOver = false;
+                return MSG_TOO_HIGH;
+
+            } else {
+                this.isOver = false;
+                return MSG_TOO_LOW;
+
+            }
+
     } while(isOver);
 
     }
