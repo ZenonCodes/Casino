@@ -38,7 +38,7 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         blackJackGame.deal(deck);
 
         // sum starting hands
-        blackJackGame.sumStartingCards(); // TODO - test sumSTartingCards
+        blackJackGame.sumStartingCards();
 
         // gameplay
         // TODO - code how game ends (while loop?) - need to loop thru this so can hit multiple times
@@ -53,7 +53,7 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         // if hit vs if stand
         // It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any
         // other card is its pip value.
-        // TODO - put sum method up here and test
+        // TODO - put sum method up here
     }
 
     // =============== SUB-METHODS ===============
@@ -113,7 +113,7 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         System.out.println("NEW CARD: " + rankNewCard + " " + suitNewCard);
     }
 
-    public void addCardToSum(Cards cardToBeAdded, Integer[] sumToAddTo) {
+    public void addCardToSum(Cards cardToBeAdded, Integer[] sumToAddTo) { // tested
         int tier = cardToBeAdded.getTier();
         if (tier <= 8) { // CARDS 2-9
             sumToAddTo[0] += (tier + 1);

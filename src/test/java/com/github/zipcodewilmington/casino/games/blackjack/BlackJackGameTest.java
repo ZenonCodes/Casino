@@ -136,20 +136,20 @@ class BlackJackGameTest {
         Cards cardD2 = new Cards(Rank.SEVEN, Suit.HEARTS, 6);
         int expectedSumPlayer = 20;
         int expectedSumDealer = 8;
-//        // When
-//        blackJackGame.handPlayer.addFirst(cardP1);
-//        blackJackGame.handPlayer.addFirst(cardP2);
-//        blackJackGame.handDealer.addFirst(cardD1);
-//        blackJackGame.handDealer.addFirst(cardD2);
-//        blackJackGame.sumStartingCards();
-//        int actualSumPlayer = blackJackGame.sumPlayer;
-//        int actualSumDealer = blackJackGame.sumDealer;
-//        blackJackGame.sumPlayer = 0;
-//        blackJackGame.sumDealer = 0;
-//        blackJackGame.handPlayer.clear();
-//        blackJackGame.handDealer.clear();
-//        // Then
-//        Assert.assertEquals(expectedSumPlayer, actualSumPlayer);
-//        Assert.assertEquals(expectedSumDealer, actualSumDealer);
+        // When
+        blackJackGame.handPlayer.addFirst(cardP1);
+        blackJackGame.handPlayer.addFirst(cardP2);
+        blackJackGame.handDealer.addFirst(cardD1);
+        blackJackGame.handDealer.addFirst(cardD2);
+        blackJackGame.sumStartingCards();
+        int actualSumPlayer = blackJackGame.sumPlayer[0];
+        int actualSumDealer = blackJackGame.sumDealer[0];
+        blackJackGame.sumPlayer[0] = 0;
+        blackJackGame.sumDealer[0] = 0;
+        blackJackGame.handPlayer.clear();
+        blackJackGame.handDealer.clear();
+        // Then
+        Assert.assertEquals(expectedSumPlayer, actualSumPlayer);
+        Assert.assertEquals(expectedSumDealer, actualSumDealer);
     }
 }
