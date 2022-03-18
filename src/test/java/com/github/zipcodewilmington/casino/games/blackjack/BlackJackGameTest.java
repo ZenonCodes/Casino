@@ -5,6 +5,7 @@ import com.github.zipcodewilmington.casino.games.war.WarGame;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,5 +39,27 @@ class BlackJackGameTest {
                 shuffledArrayListOfCards.get(4).getRank() && shuffledArrayListOfCards.get(4).getRank() ==
                 shuffledArrayListOfCards.get(5).getRank() && shuffledArrayListOfCards.get(5).getRank() ==
                 shuffledArrayListOfCards.get(6).getRank());
+    }
+
+    @Test
+    void deal() {
+        // Given
+        BlackJackGame blackJackGame = new BlackJackGame();
+        ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
+        int expectedSizePlayer = 2;
+        int expectedSizeDealer = 2;
+        int expectedSizeDeck = 48;
+        // When
+        blackJackGame.deal(deck);
+        int actualSizePlayer = blackJackGame.handPlayer.size();
+        blackJackGame.handPlayer.clear();
+        int actualSizeDealer = blackJackGame.handDealer.size();
+        blackJackGame.handDealer.clear();
+        int actualSizeDeck = deck.size();
+        deck.clear();
+        // Then
+        Assert.assertEquals(expectedSizePlayer, actualSizePlayer);
+        Assert.assertEquals(expectedSizeDealer, actualSizeDealer);
+        Assert.assertEquals(expectedSizeDeck, actualSizeDeck);
     }
 }

@@ -4,27 +4,36 @@ package com.github.zipcodewilmington.casino.games.blackjack;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.cards.Cards;
 import com.github.zipcodewilmington.casino.cards.Deck;
+import com.github.zipcodewilmington.casino.cards.Rank;
+import com.github.zipcodewilmington.casino.cards.Suit;
 
 import java.util.*;
 
 // ===== MVP
 //--------- simple, playable game
+//--------- one player vs the house
 
 // ===== ADDITIONAL FEATURES
 //--------- splitting pairs
 //--------- doubling down
+//--------- multi-player
 
 public class BlackJackGame implements GameInterface<BlackJackPlayer> {
     Boolean isCardGame = true;
+    ArrayDeque<Cards> handPlayer = new ArrayDeque<Cards>();
+    ArrayDeque<Cards> handDealer = new ArrayDeque<Cards>();
 
     public static void main(String[] args) {
         BlackJackGame blackJackGame = new BlackJackGame();
+
         // TODO assign players (and tests)
+
         // generate and deal deck
-        blackJackGame.generateBlackJackDeck();
-           // TODO deal (and tests)
+        ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
+        blackJackGame.deal(deck);
     }
 
+    // =============== SUB-METHODS ===============
 //    public static String getStringInput(String prompt) { // no test
 //        Scanner scanner = new Scanner(System.in);
 //        System.out.println(prompt);
@@ -55,12 +64,23 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         return convertedDeck;
     }
 
-//    public void deal(ArrayDeque<Cards> deck) { // tested
-//        for (int i = 1; i <= 26; i++) {
-//            handPlayer1.addFirst(deck.removeFirst());
-//            handPlayer2.addFirst(deck.removeFirst());
-//        }
-//    }
+    public void deal(ArrayDeque<Cards> deck) { // tested
+        handPlayer.addFirst(deck.removeFirst());
+        Cards playerCard1 = handPlayer.peekFirst();
+        Rank rankP1 = playerCard1.getRank();
+        Suit suitP1 = playerCard1.getSuit();
+        handDealer.addFirst(deck.removeFirst());
+        Cards dealerCard1 = handDealer.peekFirst();
+        Rank rankD1 = dealerCard1.getRank();
+        Suit suitD1 = dealerCard1.getSuit();
+        handPlayer.addFirst(deck.removeFirst());
+        Cards playerCard2 = handPlayer.peekFirst();
+        Rank rankP2 = playerCard2.getRank();
+        Suit suitP2 = playerCard2.getSuit();
+        handDealer.addFirst(deck.removeFirst());
+        System.out.println("YOUR HAND: " + rankP1 + " " + suitP1 + ", " + rankP2 + " " + suitP2);
+        System.out.println("DEALER SHOWS: " + rankD1 + " " + suitD1);
+    }
 
     @Override
     public Boolean isOver() {
