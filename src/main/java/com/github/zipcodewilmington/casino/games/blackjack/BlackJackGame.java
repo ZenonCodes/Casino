@@ -19,12 +19,13 @@ import java.util.*;
 //--------- additional wagers
 //--------- splitting pairs
 //--------- doubling down
-//--------- multi-player
 
 public class BlackJackGame implements GameInterface<BlackJackPlayer> {
     Boolean isCardGame = true;
     ArrayDeque<Cards> handPlayer = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handDealer = new ArrayDeque<Cards>();
+    int sumPlayer = 0; // TODO - clear at end???
+    int sumDealer = 0; // TODO - clear at end???
 
     public static void main(String[] args) {
         BlackJackGame blackJackGame = new BlackJackGame();
@@ -36,8 +37,10 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         blackJackGame.deal(deck);
 
         // gameplay
-        // TODO - code how game ends (while loop?)
+        // TODO - code how game ends (while loop?) - need to loop thru this so can hit multiple times
         // TODO - write code for if starting player hand is 21
+        // sum cards -- might have to adjust hit method and test to include sum adjustment
+        // if 1 person has 21 vs both vs neither
         String playerInput = getStringInput("HIT or STAND");
         if (playerInput.equals("HIT")) {
             blackJackGame.hit(blackJackGame.handPlayer, deck);

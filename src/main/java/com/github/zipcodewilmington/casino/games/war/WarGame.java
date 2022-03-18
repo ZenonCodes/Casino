@@ -13,7 +13,7 @@ import java.util.*;
 import static java.sql.DriverManager.println;
 
 public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
-    // player logs in, enters game, selects second player option and chooses player already in game
+    // TODO - 1 player vs computer
 
     Boolean isCardGame = true;
 
