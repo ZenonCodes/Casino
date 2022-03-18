@@ -7,6 +7,7 @@ import com.github.zipcodewilmington.casino.cards.Deck;
 import com.github.zipcodewilmington.casino.cards.Rank;
 import com.github.zipcodewilmington.casino.cards.Suit;
 
+import javax.smartcardio.Card;
 import java.util.*;
 
 // ===== MVP
@@ -105,6 +106,17 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         Rank rankNewCard = newCard.getRank();
         Suit suitNewCard = newCard.getSuit();
         System.out.println("NEW CARD: " + rankNewCard + " " + suitNewCard);
+    }
+
+    public void addCardToSum(Cards cardToBeAdded, int sumToAddTo) {
+        int tier = cardToBeAdded.getTier();
+        if (tier <= 8) { // CARDS 2-9
+            sumToAddTo += (tier + 1);
+        } else if (tier > 8 && tier < 13) { // CARDS 10-KING
+            sumToAddTo += 10;
+        }
+        // TODO - how to handle ACE???
+
     }
 
     @Override

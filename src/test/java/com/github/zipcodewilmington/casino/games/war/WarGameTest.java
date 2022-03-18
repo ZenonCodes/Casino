@@ -42,7 +42,8 @@ class WarGameTest {
                 arrayListOfCards.get(6).getRank());
 //        StringBuilder sb = new StringBuilder();
 //        for (int i = 0; i < arrayListOfCards.size(); i++) {
-//            sb.append(arrayListOfCards.get(i).getRank() + " " + arrayListOfCards.get(i).getSuit() + "\n");
+//            sb.append(arrayListOfCards.get(i).getRank() + " " + arrayListOfCards.get(i).getSuit() + " "
+//                    + arrayListOfCards.get(i).getTier() + "\n");
 //        }
 //        String output = sb.toString();
 //        System.out.println(output);
