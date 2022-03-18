@@ -12,12 +12,11 @@ class NumberGuessGameTest {
         //given
         NumberGuessGame game = new NumberGuessGame();
 
-
         //when
         String expected = game.findWinner(10, 10);
 
         //then
-        String actual = "Jackpot!!!!";
+        String actual = "Jackpot!!!!!";
         Assert.assertEquals(expected, actual);
 
     }
