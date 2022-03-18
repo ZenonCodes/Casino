@@ -5,6 +5,7 @@ import com.github.zipcodewilmington.casino.dice.Dice;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class KlondikeGame implements GameInterface<KlondikePlayer> {
@@ -27,9 +28,10 @@ public class KlondikeGame implements GameInterface<KlondikePlayer> {
 
     ArrayList<Integer> houseRoll = new ArrayList<>();
     ArrayList<Integer> playerRoll = new ArrayList<>();
+    //Dice dice = new Dice(5);
 
     public ArrayList<Integer> getHouseRoll(){
-        houseRoll = Dice.roll(5);
+        houseRoll = Dice.roll(0);
         Collections.sort(houseRoll);
         System.out.println(houseRoll);
         return houseRoll;
@@ -42,7 +44,29 @@ public class KlondikeGame implements GameInterface<KlondikePlayer> {
         return playerRoll;
     }
 
-    public void evaluateHouseHand(){
+    public HashMap<String, Integer> evaluateHouseHand(){
+        HashMap <String, Integer> houseHand = new HashMap<>();
+        houseHand.put("ones", Collections.frequency(houseRoll, 1));
+        houseHand.put("twos", Collections.frequency(houseRoll, 2));
+        houseHand.put("threes", Collections.frequency(houseRoll, 3));
+        houseHand.put("fours", Collections.frequency(houseRoll, 4));
+        houseHand.put("fives", Collections.frequency(houseRoll, 5));
+        houseHand.put("sixes", Collections.frequency(houseRoll, 6));
+        System.out.println(houseHand);
+        return houseHand;
+
+    }
+
+    public HashMap<String, Integer> evaluatePlayerHand(){
+        HashMap <String, Integer> playerHand = new HashMap<>();
+        playerHand.put("ones", Collections.frequency(playerRoll, 1));
+        playerHand.put("twos", Collections.frequency(playerRoll, 2));
+        playerHand.put("threes", Collections.frequency(playerRoll, 3));
+        playerHand.put("fours", Collections.frequency(playerRoll, 4));
+        playerHand.put("fives", Collections.frequency(playerRoll, 5));
+        playerHand.put("sixes", Collections.frequency(playerRoll, 6));
+        System.out.println(playerHand);
+        return playerHand;
 
     }
 
