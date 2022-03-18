@@ -3,6 +3,10 @@ package com.github.zipcodewilmington.casino.games.blackjack;
 
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.WagingGame;
+import com.github.zipcodewilmington.casino.cards.Cards;
+import com.github.zipcodewilmington.casino.cards.Deck;
+import com.github.zipcodewilmington.casino.cards.Rank;
+import com.github.zipcodewilmington.casino.cards.Suit;
 
 import java.util.List;
 
