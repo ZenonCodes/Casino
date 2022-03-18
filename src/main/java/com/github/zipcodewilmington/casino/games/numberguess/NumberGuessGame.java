@@ -26,24 +26,27 @@ public class NumberGuessGame implements GameInterface<NumberGuessPlayer> {
             System.out.println("Pick a number between 1 and 10");
             int guess = scanner.nextInt();
             scanner.close();
-            if (guess == num) {
-                this.isOver = true;
-                return MSG_WINNER;
+            return findWinner(guess, num);
 
-            } else if (guess > num) {
-                this.isOver = false;
-                return MSG_TOO_HIGH;
-
-            } else {
-                this.isOver = false;
-                return MSG_TOO_LOW;
-
-            }
-
-    } while(isOver);
+        } while(isOver);
 
     }
 
+    public String findWinner(int guess, int num) {
+        if (guess == num) {
+            this.isOver = true;
+            return MSG_WINNER;
+
+        } else if (guess > num) {
+            this.isOver = false;
+            return MSG_TOO_HIGH;
+
+        } else {
+            this.isOver = false;
+            return MSG_TOO_LOW;
+
+        }
+    }
 
 
     @Override
