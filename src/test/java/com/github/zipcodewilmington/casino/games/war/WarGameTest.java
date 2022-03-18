@@ -42,7 +42,8 @@ class WarGameTest {
                 arrayListOfCards.get(6).getRank());
 //        StringBuilder sb = new StringBuilder();
 //        for (int i = 0; i < arrayListOfCards.size(); i++) {
-//            sb.append(arrayListOfCards.get(i).getRank() + " " + arrayListOfCards.get(i).getSuit() + "\n");
+//            sb.append(arrayListOfCards.get(i).getRank() + " " + arrayListOfCards.get(i).getSuit() + " "
+//                    + arrayListOfCards.get(i).getTier() + "\n");
 //        }
 //        String output = sb.toString();
 //        System.out.println(output);
@@ -82,7 +83,34 @@ class WarGameTest {
         warGame.temporary.addFirst(card4);
         warGame.distributeTemporaryCards(recipient);
         int actualSize = recipient.size();
+        warGame.temporary.clear();
         // Then
         Assert.assertEquals(expectedSize, actualSize);
+    }
+
+    @Test
+    void addThreeCardsToTemporary() {
+        // Given
+        WarGame warGame = new WarGame();
+        Cards card1 = new Cards(Rank.TWO, Suit.HEARTS, 1);
+        Cards card2 = new Cards(Rank.TWO, Suit.SPADES, 1);
+        Cards card3 = new Cards(Rank.TWO, Suit.DIAMONDS, 1);
+        Cards card4 = new Cards(Rank.TWO, Suit.CLUBS, 1);
+        ArrayDeque<Cards> playerHand = new ArrayDeque<Cards>();
+        warGame.temporary.clear();
+        int expectedSizePlayer = 1;
+        int expectedSizeTemporary = 3;
+        // When
+        playerHand.addFirst(card1);
+        playerHand.addFirst(card2);
+        playerHand.addFirst(card3);
+        playerHand.addFirst(card4);
+        warGame.addThreeCardsToTemporary(playerHand);
+        int actualSizePlayer = playerHand.size();
+        int actualSizeTemporary = warGame.temporary.size();
+        warGame.temporary.clear();
+        // Then
+        Assert.assertEquals(expectedSizePlayer, actualSizePlayer);
+        Assert.assertEquals(expectedSizeTemporary, actualSizeTemporary);
     }
 }
