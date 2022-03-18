@@ -3,6 +3,8 @@ package com.github.zipcodewilmington.casino.games.war;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.cards.Cards;
 import com.github.zipcodewilmington.casino.cards.Deck;
+import com.github.zipcodewilmington.casino.cards.Rank;
+import com.github.zipcodewilmington.casino.cards.Suit;
 import com.github.zipcodewilmington.casino.games.war.WarPlayer;
 
 import java.util.Collections;
@@ -15,26 +17,23 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
 
     Scanner scanner = new Scanner(System.in);
 
-    Deque<Cards> temporary = new ArrayDeque<Cards>();
-    Deque<Cards> handPlayer1 = new ArrayDeque<Cards>();
-    Deque<Cards> handPlayer2 = new ArrayDeque<Cards>();
+    ArrayDeque<Cards> temporary = new ArrayDeque<Cards>();
+    ArrayDeque<Cards> handPlayer1 = new ArrayDeque<Cards>();
+    ArrayDeque<Cards> handPlayer2 = new ArrayDeque<Cards>();
 
     public static void main(String[] args) { // I don't think I need a main method here as the game will be initiated in another class.
         WarGame wargame = new WarGame();
+        wargame.run();
     }
 
 
     // 2 players or 1v computer
-    // how do they quit midgame?
 // clear temporary at end so no carry over betwen games?
     // player input/output???
 
-    // try test driven development - but hard since don't know where each piece is going
-    // review generics lecture - Wei posted slides in watercrest, vandana got recording
-
     // ============================= SUB-METHODS =============================
 
-    public ArrayDeque<Cards> generateWarDeck() {
+    public ArrayDeque<Cards> generateWarDeck() { // no test
         ArrayList<Cards> unShuffled = createWarDeck();
         ArrayList<Cards> shuffled = shuffle(unShuffled);
         ArrayDeque<Cards> deck = convertDeckToDeque(shuffled);
@@ -57,28 +56,37 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
         return convertedDeck;
     }
 
-    public void deal(ArrayDeque<Cards> deck) {
+    public void deal(ArrayDeque<Cards> deck) { // tested
         for (int i = 1; i <= 26; i++) {
             handPlayer1.addFirst(deck.removeFirst());
             handPlayer2.addFirst(deck.removeFirst());
         }
     }
 
-    public void distributeTemporaryCards(Deque<Cards> handOfWinner) {
-        for (int t = 1; t <= temporary.size(); t++) {
-            handOfWinner.addLast(temporary.removeFirst());
+    public void distributeTemporaryCards(ArrayDeque<Cards> handOfWinner) { // tested
+        int x = 0;
+        while (x == 0) {
+            if (temporary.isEmpty()) {
+                x = 1;
+            } else {
+                handOfWinner.addLast(temporary.removeFirst());
+            }
         }
     }
 
     public void compareAndRedistribute(Cards player1Card, Cards player2Card) {
-        int tierCard1 = player1Card.getTier(); // need method added
-        int tierCard2 = player2Card.getTier(); // need method added
+        int tierCard1 = player1Card.getTier();
+        int tierCard2 = player2Card.getTier();
+        Rank rank1 = player1Card.getRank();
+        Suit suit1 = player1Card.getSuit();
+        Rank rank2 = player2Card.getRank();
+        Suit suit2 = player2Card.getSuit();
         if (tierCard1 > tierCard2) {
             handPlayer1.addLast(player1Card);
             handPlayer1.addLast(player2Card);
             distributeTemporaryCards(handPlayer1);
-            System.out.println("Player 1: " + player1Card); // rename players to account names
-            System.out.println("Player 2: " + player2Card); // rename players to account names
+            System.out.println("Player 1: " + rank1 + " " + suit1); // rename players to account names
+            System.out.println("Player 2: " + rank2 + " " + suit2); // rename players to account names
             System.out.println("Player 1 Wins This Round!"); // rename players to account names
             System.out.println("Player 1 Has " + handPlayer1.size() + " cards."); // rename players
             // to account names
@@ -89,8 +97,8 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
             handPlayer2.addLast(player1Card);
             handPlayer2.addLast(player2Card);
             distributeTemporaryCards(handPlayer2);
-            System.out.println("Player 1: " + player1Card); // rename players to account names
-            System.out.println("Player 2: " + player2Card); // rename players to account names
+            System.out.println("Player 1: " + rank1 + " " + suit1); // rename players to account names
+            System.out.println("Player 2: " + rank2 + " " + suit2); // rename players to account names
             System.out.println("Player 2 Wins This Round!"); // rename players to account names
             System.out.println("Player 1 Has " + handPlayer1.size() + " cards."); // rename players
             // to account names
@@ -99,6 +107,8 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
 
         } else if (tierCard1 == tierCard2) { // what if that was the last card for one of them?
             if (handPlayer1.size() > 3 && handPlayer2.size() > 3) {
+                temporary.addFirst(player1Card);
+                temporary.addFirst(player2Card);
                 temporary.addFirst(handPlayer1.removeFirst()); // make sub-method w/ player parameter to...
                 temporary.addFirst(handPlayer1.removeFirst()); // ...move 3 cards to temp
                 temporary.addFirst(handPlayer1.removeFirst());
@@ -107,6 +117,8 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
                 temporary.addFirst(handPlayer2.removeFirst());
                 return;
             } else if (handPlayer1.size() > 3 && handPlayer2.size() < 3) {
+                temporary.addFirst(player1Card);
+                temporary.addFirst(player2Card);
                 temporary.addFirst(handPlayer1.removeFirst());
                 temporary.addFirst(handPlayer1.removeFirst());
                 temporary.addFirst(handPlayer1.removeFirst());
@@ -115,6 +127,8 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
                 }
                 return;
             } else if (handPlayer1.size() < 3 && handPlayer2.size() > 3) {
+                temporary.addFirst(player1Card);
+                temporary.addFirst(player2Card);
                 temporary.addFirst(handPlayer2.removeFirst());
                 temporary.addFirst(handPlayer2.removeFirst());
                 temporary.addFirst(handPlayer2.removeFirst());
@@ -123,6 +137,8 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
                 }
                 return;
             } else {
+                temporary.addFirst(player1Card);
+                temporary.addFirst(player2Card);
                 while (handPlayer1.size() > 1) {
                     temporary.addFirst(handPlayer1.removeFirst());
                 }
@@ -162,8 +178,8 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
     @Override
     public void run() {
         // assign players
-        String player1 = "PLAYER1"; // update this piece
-        String player2 = "PLAYER2"; // update this piece
+        String player1 = "PLAYER1"; // TODO - work on this
+        String player2 = "PLAYER2"; // TODO - work on this
 
         ArrayDeque<Cards> deck = generateWarDeck(); // generates shuffled card deck
         deal(deck); // deals the cards
@@ -173,6 +189,9 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING // RO
             Cards player1Card = handPlayer1.removeFirst();
             Cards player2Card = handPlayer2.removeFirst();
             compareAndRedistribute(player1Card, player2Card);
+            // sout play next hand?
+            // if yes - continue
+            // if no - break/exit;
         }
 
         // declare a winner
