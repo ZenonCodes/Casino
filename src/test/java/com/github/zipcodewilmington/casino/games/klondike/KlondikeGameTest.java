@@ -21,41 +21,54 @@ class KlondikeGameTest {
         int actual = roll.size();
         //then
         Assert.assertEquals(expected, actual);
+        roll.clear();
     }
 
     @Test
     void getPlayerRollTest() {
-        KlondikeGame game1 = new KlondikeGame();
+        KlondikeGame game = new KlondikeGame();
         int expected = 5;
         //when
-        ArrayList<Integer> roll1 = game1.getPlayerRoll();
-        int actual = roll1.size();
+        ArrayList<Integer> roll = game.getPlayerRoll();
+        int actual = roll.size();
         //then
         Assert.assertEquals(actual, expected);
+        roll.clear();
     }
 
     @Test
     void evaluateHouseHandTest() {
         //given
-        KlondikeGame game2 = new KlondikeGame();
+        KlondikeGame game = new KlondikeGame();
 
         //when
-        ArrayList<Integer> roll1 = game2.getHouseRoll();
+        ArrayList<Integer> handEval = game.getHouseRoll();
 
         //then
-        HashMap<String, Integer> expected = game2.evaluateHouseHand();
+        HashMap<String, Integer> expected = game.evaluateHouseHand();
+        handEval.clear();
 
     }
 
     @Test
     void evaluatePlayerHand() {
         //given
-        KlondikeGame game3 = new KlondikeGame();
+        KlondikeGame game = new KlondikeGame();
 
         //when
-        ArrayList<Integer> roll1 = game3.getPlayerRoll();
+        ArrayList<Integer> handEval = game.getPlayerRoll();
 
         //then
-        HashMap<String, Integer> expected = game3.evaluatePlayerHand();
+        HashMap<String, Integer> expected = game.evaluatePlayerHand();
+        handEval.clear();
+    }
+
+    @Test
+    void getKlondikeHand() {
+        KlondikeGame game = new KlondikeGame();
+        ArrayList<Integer> roll = game.getHouseRoll();
+        HashMap<String, Integer> expected = game.evaluateHouseHand();
+        game.getKlondikeHand();
+        roll.clear();
     }
 }
