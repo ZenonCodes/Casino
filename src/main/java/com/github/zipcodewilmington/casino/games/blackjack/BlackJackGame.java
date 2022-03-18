@@ -12,8 +12,11 @@ import java.util.*;
 // ===== MVP
 //--------- simple, playable game
 //--------- one player vs the house
+//--------- no betting
 
 // ===== ADDITIONAL FEATURES
+//--------- bet at beginning
+//--------- additional wagers
 //--------- splitting pairs
 //--------- doubling down
 //--------- multi-player
@@ -31,15 +34,26 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         // generate and deal deck
         ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
         blackJackGame.deal(deck);
+
+        // gameplay
+        // TODO - code how game ends (while loop?)
+        // TODO - write code for if starting player hand is 21
+        String playerInput = getStringInput("HIT or STAND");
+        if (playerInput.equals("HIT")) {
+            blackJackGame.hit(blackJackGame.handPlayer, deck);
+        }
+        // if hit vs if stand
+        // It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any
+        // other card is its pip value.
     }
 
     // =============== SUB-METHODS ===============
-//    public static String getStringInput(String prompt) { // no test
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println(prompt);
-//        String userInput = scanner.nextLine();
-//        return userInput;
-//    }
+    public static String getStringInput(String prompt) { // no test
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(prompt);
+        String userInput = scanner.nextLine();
+        return userInput;
+    }
 
     public ArrayDeque<Cards> generateBlackJackDeck() { // no test
         ArrayList<Cards> unShuffled = createBlackJackDeck();
@@ -80,6 +94,14 @@ public class BlackJackGame implements GameInterface<BlackJackPlayer> {
         handDealer.addFirst(deck.removeFirst());
         System.out.println("YOUR HAND: " + rankP1 + " " + suitP1 + ", " + rankP2 + " " + suitP2);
         System.out.println("DEALER SHOWS: " + rankD1 + " " + suitD1);
+    }
+
+    public void hit(ArrayDeque<Cards> handToHit, ArrayDeque<Cards> deck) { // tested
+        handToHit.addFirst(deck.removeFirst());
+        Cards newCard = handToHit.peekFirst();
+        Rank rankNewCard = newCard.getRank();
+        Suit suitNewCard = newCard.getSuit();
+        System.out.println("NEW CARD: " + rankNewCard + " " + suitNewCard);
     }
 
     @Override

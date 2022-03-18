@@ -62,4 +62,27 @@ class BlackJackGameTest {
         Assert.assertEquals(expectedSizeDealer, actualSizeDealer);
         Assert.assertEquals(expectedSizeDeck, actualSizeDeck);
     }
+
+    @Test
+    void hit() {
+        // Given
+        BlackJackGame blackJackGame = new BlackJackGame();
+        ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
+        int expectedSizePlayer = 3;
+        int expectedSizeDealer = 2;
+        int expectedSizeDeck = 47;
+        // When
+        blackJackGame.deal(deck);
+        blackJackGame.hit(blackJackGame.handPlayer, deck);
+        int actualSizePlayer = blackJackGame.handPlayer.size();
+        blackJackGame.handPlayer.clear();
+        int actualSizeDealer = blackJackGame.handDealer.size();
+        blackJackGame.handDealer.clear();
+        int actualSizeDeck = deck.size();
+        deck.clear();
+        // Then
+        Assert.assertEquals(expectedSizePlayer, actualSizePlayer);
+        Assert.assertEquals(expectedSizeDealer, actualSizeDealer);
+        Assert.assertEquals(expectedSizeDeck, actualSizeDeck);
+    }
 }
