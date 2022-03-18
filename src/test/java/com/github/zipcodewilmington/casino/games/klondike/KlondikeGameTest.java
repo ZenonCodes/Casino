@@ -71,4 +71,20 @@ class KlondikeGameTest {
         game.getKlondikeHand();
         roll.clear();
     }
+
+    @Test
+    void isTwoPairTest() {
+        ///given
+        KlondikeGame game = new KlondikeGame();
+        ArrayList<Integer> newArr = new ArrayList<>();
+        //when
+        newArr.add(2);
+        newArr.add(3);
+        newArr.add(3);
+        newArr.add(2);
+        newArr.add(6);
+
+        //then
+        Assert.assertTrue(game.isTwoPair(newArr));
+    }
 }
