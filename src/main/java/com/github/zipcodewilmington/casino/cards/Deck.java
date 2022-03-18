@@ -38,23 +38,7 @@ public class Deck {
         Collections.shuffle(cardDeck);
     }
 
-    @Override
-    public String toString() {
-//         return "Cards{" +
-//               "suit=" + Suit. +
-//                ", rank=" + Rank.rank +
-//                ", tier=" + Cards.tier +
-//                ", cardDeck=" + cardDeck +
-//               '}';
 
-        StringBuilder str  = new StringBuilder();
-        for (Cards cards : cardDeck) {
-           str.append(cards);
-        }
-            return " Card Deck: " + str;
-        }
-
-//
 
 
 
