@@ -13,24 +13,30 @@ import com.github.zipcodewilmington.utils.IOConsole;
  */
 public class Casino implements Runnable {
     private final IOConsole console = new IOConsole(AnsiColor.BLUE);
+    CasinoAccountManager casinoAccountManager;
+    public Casino (CasinoAccountManager casinoAccountManager){
+        this.casinoAccountManager = casinoAccountManager;
+
+    }
 
     @Override
     public void run() {
         String arcadeDashBoardInput;
-        CasinoAccountManager casinoAccountManager = new CasinoAccountManager();
+        CasinoAccount casinoAccount;
+
         do {
             arcadeDashBoardInput = getArcadeDashboardInput();
             if ("select-game".equals(arcadeDashBoardInput)) {
                 String accountName = console.getStringInput("Enter your account name:");
                 String accountPassword = console.getStringInput("Enter your account password:");
-                CasinoAccount casinoAccount = casinoAccountManager.getAccount(accountName, accountPassword);
+                casinoAccount = casinoAccountManager.getAccount(accountName, accountPassword);
                 boolean isValidLogin = casinoAccount != null;
                 if (isValidLogin) {
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
                     if (gameSelectionInput.equals("SLOTS")) {
-                        play(new SlotsGame(), new SlotsPlayer(), casinoAccount);
+                        play(new SlotsGame(), new SlotsPlayer(), accountName);
                     } else if (gameSelectionInput.equals("NUMBERGUESS")) {
-                        play(new NumberGuessGame(), new NumberGuessPlayer(),casinoAccount);
+                        play(new NumberGuessGame(), new NumberGuessPlayer(), accountName);
                     } else {
                         // TODO - implement better exception handling
                         String errorMessage = "[ %s ] is an invalid game selection";
@@ -48,6 +54,12 @@ public class Casino implements Runnable {
                 CasinoAccount newAccount = casinoAccountManager.createAccount(accountName, accountPassword);
 //                casinoAccountManager.registerAccount(newAccount);
             }
+            else if ("check-balance".equals(arcadeDashBoardInput)) {
+                console.println("To get your account balance...");
+                String accountName = console.getStringInput("Enter your account name:");
+                casinoAccount = casinoAccountManager.getAccountByUsername(accountName);
+                System.out.println(casinoAccount.getAccountBalance());
+            }
         } while (!"logout".equals(arcadeDashBoardInput));
     }
 
@@ -55,7 +67,7 @@ public class Casino implements Runnable {
         return console.getStringInput(new StringBuilder()
                 .append("Welcome to the Arcade Dashboard!")
                 .append("\nFrom here, you can select any of the following options:")
-                .append("\n\t[ create-account ], [ select-game ]")
+                .append("\n\t[ create-account ], [ select-game ], [check-balance]")
                 .toString());
     }
 
@@ -67,10 +79,10 @@ public class Casino implements Runnable {
                 .toString());
     }
 
-    private void play(GameInterface gameObject, Player playerObject, CasinoAccount casinoAccount) {
-        playerObject.casinoAccount = casinoAccount;
+    private void play(GameInterface gameObject, Player playerObject, String accountName) {
         GameInterface game = gameObject;
         Player player = playerObject;
+        player.assignCasinoAccount(casinoAccountManager.getAccountByUsername(accountName));
         game.addPlayer(player);
         game.run();
     }
