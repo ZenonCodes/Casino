@@ -29,6 +29,8 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     ArrayDeque<Cards> handDealer = new ArrayDeque<Cards>();
     Integer[] sumPlayer = {0}; // TODO - clear at end???
     Integer[] sumDealer = {0}; // TODO - clear at end???
+    Rank rankD2;
+    Suit suitD2;
 
     public static void main(String[] args) {
         System.out.println("\n" + "WELCOME TO BLACKJACK" + "\n");
@@ -58,12 +60,19 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             }
         }
         // ----- dealer's turn
-        System.out.println("DEALER'S TURN" + "\n");
-        // TODO - dealer reveals cards
+        System.out.println("\n" + "DEALER'S TURN" + "\n");
+        System.out.println("DEALER'S BOTTOM CARD: " + blackJackGame.rankD2 + " " +
+                blackJackGame.suitD2 + "\n");
         if (blackJackGame.sumDealer[0] < 17) {
-            while (blackJackGame.sumDealer[0] < 17)
+            while (blackJackGame.sumDealer[0] < 17) {
+                System.out.println("DEALER HITS" + "\n");
                 blackJackGame.hit(blackJackGame.handDealer, deck, blackJackGame.sumDealer);
-        } // TODO - add else
+            }
+            System.out.println("DEALER STANDS" + "\n");
+        } else {
+            System.out.println("DEALER STANDS" + "\n");
+            System.out.println("DEALER HAS " + blackJackGame.sumDealer[0]);
+        }
 
         // It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any
         // other card is its pip value.
@@ -114,6 +123,9 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         Rank rankP2 = playerCard2.getRank();
         Suit suitP2 = playerCard2.getSuit();
         handDealer.addFirst(deck.removeFirst());
+        Cards dealerCard2 = handDealer.peekFirst();
+        rankD2 = dealerCard2.getRank();
+        suitD2 = dealerCard2.getSuit();
         System.out.println("YOUR HAND: " + rankP1 + " " + suitP1 + ", " + rankP2 + " " + suitP2 + "\n");
         System.out.println("DEALER SHOWS: " + rankD1 + " " + suitD1 + "\n");
     }
@@ -123,7 +135,7 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         Cards newCard = handToHit.peekFirst();
         Rank rankNewCard = newCard.getRank();
         Suit suitNewCard = newCard.getSuit();
-        System.out.println("NEW CARD: " + rankNewCard + " " + suitNewCard);
+        System.out.println("NEW CARD: " + rankNewCard + " " + suitNewCard + "\n");
         addCardToSum(newCard, sumToAddTo);
     }
 
