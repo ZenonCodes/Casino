@@ -26,7 +26,7 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     Integer[] sumDealer = {0};
     Rank rankD2;
     Suit suitD2;
-    BlackJackPlayer player; // TODO - confirm this works
+    BlackJackPlayer player;
     int playerBet;
 
     // =============== SUB-METHODS ===============
@@ -151,7 +151,6 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     @Override
     public void addPlayer(BlackJackPlayer player) {
         this.player = player;
-        // TODO - write this method, clear it when game is over, also update balance at end
     }
 
     @Override
@@ -172,6 +171,7 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     @Override
     public void run() {
         System.out.println("\n" + "WELCOME TO BLACKJACK" + "\n");
+        int playerBalance = player.getAccountBalance();
 
         // take bet
         player.setBet();
@@ -188,66 +188,73 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
 
         // gameplay
         if (naturalPlayer == 21 && naturalDealer == 21) {
-            // stand-off -- player takes back chips
+            System.out.println("STAND-OFF - BET RETURNED TO PLAYER");
+            return;
         } else if (naturalPlayer < 21 && naturalDealer == 21) {
-            // If the dealer has a natural, they collect the bets of all players who do not
+            System.out.println("DEALER HAS NATURAL, PLAYER HAS " + sumPlayer[0] + ". PLAYER LOSES.");
+            int newPlayerBalance = playerBalance - playerBet;
+            player.setAccountBalance(newPlayerBalance);
+            return;
         } else if (naturalPlayer == 21 && naturalDealer < 21) {
-            // the dealer immediately pays that player one and a half times the amount of their bet.
+            int winnings = (int) (playerBet * 1.5);
+            System.out.println("PLAYER HAS NATURAL, DEALER HAS " + sumDealer[0] + ". PLAYER WINS " +
+                    winnings);
+            int newPlayerBalance = playerBalance + winnings;
+            player.setAccountBalance(newPlayerBalance);
+            return;
         } else if (naturalPlayer < 21 && naturalDealer < 21) {
-            // continue with game
-        }
+            // TODO - how to handle ACE??? -- maybe option to add 10 later???
+            // ----- player's turn
+            System.out.println("YOUR TURN" + "\n");
+            while (sumPlayer[0] < 21) {
+                String playerInput = getStringInput("HIT or STAND");
+                if (playerInput.equals("HIT")) {
+                    hit(handPlayer, deck, sumPlayer);
+                } else if (playerInput.equals("STAND")) {
+                    break;
+                }
+            }
+            // ----- dealer's turn
+            System.out.println("\n" + "DEALER'S TURN" + "\n");
+            System.out.println("DEALER'S BOTTOM CARD: " + rankD2 + " " +
+                    suitD2 + "\n");
+            if (sumDealer[0] < 17) {
+                while (sumDealer[0] < 17) {
+                    System.out.println("DEALER HITS" + "\n");
+                    hit(handDealer, deck, sumDealer);
+                }
+                System.out.println("DEALER STANDS" + "\n");
+            } else {
+                System.out.println("DEALER STANDS" + "\n");
+            }
 
-        // TODO - write code for if starting player hand is 21
-        // if 1 person has 21 vs both vs neither
-        // TODO - how to handle ACE??? -- maybe option to add 10 later???
-        // ----- player's turn
-        System.out.println("YOUR TURN" + "\n");
-        while (sumPlayer[0] < 21) {
-            String playerInput = getStringInput("HIT or STAND");
-            if (playerInput.equals("HIT")) {
-                hit(handPlayer, deck, sumPlayer);
-            } else if (playerInput.equals("STAND")) {
-                break;
-            }
-        }
-        // ----- dealer's turn
-        System.out.println("\n" + "DEALER'S TURN" + "\n");
-        System.out.println("DEALER'S BOTTOM CARD: " + rankD2 + " " +
-                suitD2 + "\n");
-        if (sumDealer[0] < 17) {
-            while (sumDealer[0] < 17) {
-                System.out.println("DEALER HITS" + "\n");
-                hit(handDealer, deck, sumDealer);
-            }
-            System.out.println("DEALER STANDS" + "\n");
-        } else {
-            System.out.println("DEALER STANDS" + "\n");
-        }
+            // declare winner
+            // ----- print hands and totals
+            String playerOutput = buildOutputString(handPlayer, sumPlayer);
+            System.out.println(playerOutput);
+            String dealerOutput = buildOutputString(handDealer, sumDealer);
+            System.out.println(dealerOutput);
 
-        // declare winner
-        // ----- print hands and totals
-        String playerOutput = buildOutputString(handPlayer, sumPlayer);
-        System.out.println(playerOutput);
-        String dealerOutput = buildOutputString(handDealer, sumDealer);
-        System.out.println(dealerOutput);
+            // ----- print winner
+            if (sumPlayer[0] <= 21 && sumDealer[0] <= 21) {
+                if (sumPlayer[0] > sumDealer[0]) {
+                    System.out.println("\n" + "PLAYER WINS");
+                }
+                if (sumPlayer[0] < sumDealer[0]) {
+                    System.out.println("\n" + "DEALER WINS");
+                }
+                if (sumPlayer[0] == sumDealer[0]) {
+                    System.out.println("\n" + "TIE");
+                }
+            } else if (sumPlayer[0] <= 21 && sumDealer[0] > 21) {
+                System.out.println("\n" + "DEALER BUST - PLAYER WINS!" + "\n");
+            } else if (sumPlayer[0] > 21 && sumDealer[0] <= 21) {
+                System.out.println("\n" + "PLAYER BUST - DEALER WINS!" + "\n");
+            } else if (sumPlayer[0] > 21 && sumDealer[0] > 21) {
+                System.out.println("\n" + "PLAYER AND DEALER BUST" + "\n");
 
-        // ----- print winner
-        if (sumPlayer[0] <= 21 && sumDealer[0] <= 21) {
-            if (sumPlayer[0] > sumDealer[0]) {
-                System.out.println("\n" + "PLAYER WINS");
+                // TODO - update account balance at end - not already coded for, correct?
             }
-            if (sumPlayer[0] < sumDealer[0]) {
-                System.out.println("\n" + "DEALER WINS");
-            }
-            if (sumPlayer[0] == sumDealer[0]) {
-                System.out.println("\n" + "TIE");
-            }
-        } else if (sumPlayer[0] <= 21 && sumDealer[0] > 21) {
-            System.out.println("\n" + "DEALER BUST - PLAYER WINS!");
-        } else if (sumPlayer[0] > 21 && sumDealer[0] <= 21) {
-            System.out.println("\n" + "PLAYER BUST - DEALER WINS!");
-        } else if (sumPlayer[0] > 21 && sumDealer[0] > 21) {
-            System.out.println("\n" + "PLAYER AND DEALER BUST");
         }
     }
 }
