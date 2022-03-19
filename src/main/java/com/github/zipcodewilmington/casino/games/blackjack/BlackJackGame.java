@@ -12,8 +12,7 @@ import com.github.zipcodewilmington.casino.cards.Suit;
 
 import java.util.*;
 
-// ===== ADDITIONAL FEATURES
-//--------- bet at beginning
+// ===== TODO: ADDITIONAL FEATURES
 //--------- additional wagers
 //--------- splitting pairs
 //--------- doubling down
