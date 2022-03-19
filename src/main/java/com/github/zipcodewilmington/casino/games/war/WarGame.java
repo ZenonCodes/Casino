@@ -1,11 +1,12 @@
 package com.github.zipcodewilmington.casino.games.war;
 
+import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.GameInterface;
+import com.github.zipcodewilmington.casino.Player;
 import com.github.zipcodewilmington.casino.cards.Cards;
 import com.github.zipcodewilmington.casino.cards.Deck;
 import com.github.zipcodewilmington.casino.cards.Rank;
 import com.github.zipcodewilmington.casino.cards.Suit;
-import com.github.zipcodewilmington.casino.games.war.WarPlayer;
 
 import java.util.Collections;
 import java.util.*;
@@ -166,6 +167,7 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
         }
     }
 
+
     @Override
     public Boolean isOver() {
         return null;
@@ -234,4 +236,5 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
         System.exit(0);
         // return;  // TODO - fix this so it redirects to game selection or handle in other clas??
     }
+
 }

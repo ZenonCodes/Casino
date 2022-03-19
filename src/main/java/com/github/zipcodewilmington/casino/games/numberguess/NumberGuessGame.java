@@ -1,6 +1,7 @@
 package com.github.zipcodewilmington.casino.games.numberguess;
 
 import com.github.zipcodewilmington.casino.GameInterface;
+import com.github.zipcodewilmington.casino.WagingGame;
 
 import java.util.List;
 import java.util.Scanner;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 /**
  * Created by leon on 7/21/2020.
  */
-public class NumberGuessGame implements GameInterface<NumberGuessPlayer> {
+public class NumberGuessGame extends WagingGame implements GameInterface<NumberGuessPlayer> {
 
     Scanner scanner = new Scanner(System.in); //Scanner Class
     private final int num = 1 + (int) (10 * Math.random());// Computer Choice

@@ -1,14 +1,12 @@
 package com.github.zipcodewilmington.casino.games.klondike;
 
 import com.github.zipcodewilmington.casino.GameInterface;
+import com.github.zipcodewilmington.casino.WagingGame;
 import com.github.zipcodewilmington.casino.dice.Dice;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
-public class KlondikeGame implements GameInterface<KlondikePlayer> {
+public class KlondikeGame extends WagingGame implements GameInterface<KlondikePlayer> {
 
     /*
     given
@@ -28,12 +26,16 @@ public class KlondikeGame implements GameInterface<KlondikePlayer> {
 
     ArrayList<Integer> houseRoll = new ArrayList<>();
     ArrayList<Integer> playerRoll = new ArrayList<>();
-    HashMap <String, Integer> houseHand = new HashMap<>();
-    HashMap <String, Integer> playerHand = new HashMap<>();
+    HashMap<String, Integer> houseHand = new HashMap<>();
+    HashMap<String, Integer> playerHand = new HashMap<>();
     String klondikeHand = "";
+    String playerklondikeHand = "";
+    int houseHandRank;
+    int playerHandRank;
+
     //Dice dice = new Dice(5);
 
-    public ArrayList<Integer> getHouseRoll(){
+    public ArrayList<Integer> getHouseRoll() {
         houseRoll = Dice.roll(5);
         Collections.sort(houseRoll);
         System.out.println(houseRoll);
@@ -47,7 +49,7 @@ public class KlondikeGame implements GameInterface<KlondikePlayer> {
         return playerRoll;
     }
 
-    public HashMap<String, Integer> evaluateHouseHand(){
+    public HashMap<String, Integer> evaluateHouseHand() {
         houseHand.put("ones", Collections.frequency(houseRoll, 1));
         houseHand.put("twos", Collections.frequency(houseRoll, 2));
         houseHand.put("threes", Collections.frequency(houseRoll, 3));
@@ -59,34 +61,47 @@ public class KlondikeGame implements GameInterface<KlondikePlayer> {
 
     }
 
-    public String getKlondikeHand(){
+    public int getKlondikeHand() {
 
-        if (houseHand.containsValue(5)){
+        if (houseHand.containsValue(5)) {
             klondikeHand = "Five of a Kind";
-            return klondikeHand;
+            houseHandRank = 6;
+            System.out.println(klondikeHand);
+            return houseHandRank;
         } else if (houseHand.containsValue(4)) {
             klondikeHand = "Four of a Kind";
+            houseHandRank = 5;
             System.out.println(klondikeHand);
-            return klondikeHand;
-        }else if (houseHand.containsValue(3) && houseHand.containsValue(2)){
+            return houseHandRank;
+        } else if (houseHand.containsValue(3) && houseHand.containsValue(2)) {
             klondikeHand = "Full House";
-            return klondikeHand;
+            houseHandRank = 4;
+            System.out.println(klondikeHand);
+            return houseHandRank;
         } else if (houseHand.containsValue(3)) {
             klondikeHand = "Three of a Kind";
+            houseHandRank = 3;
             System.out.println(klondikeHand);
-            return klondikeHand;
-        } else if (houseHand.containsValue(2) && houseHand.containsValue(2)){
-            klondikeHand = "Two Pair";
-            System.out.println(klondikeHand);
-            return klondikeHand;
-        }else if (houseHand.containsValue(2)){
-            klondikeHand = "Pair";
-            return klondikeHand;
+            return houseHandRank;
+        } else if (houseHand.containsValue(2)) {
+            if (isTwoPair(houseRoll)) {
+                klondikeHand = "Two Pair";
+                houseHandRank = 2;
+                System.out.println(klondikeHand);
+            } else {
+                klondikeHand = "Pair";
+                houseHandRank = 1;
+                System.out.println(klondikeHand);
+                return houseHandRank;
+            }
+        } else {
+            klondikeHand = "Tie, house wins...";
+            houseHandRank = 7;
         }
-        return klondikeHand;
+        return houseHandRank;
     }
 
-    public HashMap<String, Integer> evaluatePlayerHand(){
+    public HashMap<String, Integer> evaluatePlayerHand() {
         playerHand.put("ones", Collections.frequency(playerRoll, 1));
         playerHand.put("twos", Collections.frequency(playerRoll, 2));
         playerHand.put("threes", Collections.frequency(playerRoll, 3));
@@ -95,14 +110,61 @@ public class KlondikeGame implements GameInterface<KlondikePlayer> {
         playerHand.put("sixes", Collections.frequency(playerRoll, 6));
         System.out.println(playerHand);
         return playerHand;
-
     }
 
+    public int getPlayerKlondikeHand() {
 
+        if (playerHand.containsValue(5)) {
+            playerklondikeHand = "Five of a Kind";
+            playerHandRank = 6;
+            System.out.println(playerklondikeHand);
+            return playerHandRank;
+        } else if (playerHand.containsValue(4)) {
+            playerklondikeHand = "Four of a Kind";
+            playerHandRank = 5;
+            System.out.println(playerklondikeHand);
+            return playerHandRank;
+        } else if (playerHand.containsValue(3) && houseHand.containsValue(2)) {
+            playerklondikeHand = "Full House";
+            playerHandRank = 4;
+            System.out.println(playerklondikeHand);
+            return playerHandRank;
+        } else if (playerHand.containsValue(3)) {
+            playerklondikeHand = "Three of a Kind";
+            playerHandRank = 3;
+            System.out.println(playerklondikeHand);
+            return playerHandRank;
+        } else if (playerHand.containsValue(2)) {
+            if (isTwoPair(playerRoll)) {
+                playerklondikeHand = "Two Pair";
+                playerHandRank = 2;
+                System.out.println(playerklondikeHand);
+            } else {
+                playerklondikeHand = "Pair";
+                playerHandRank = 1;
+                System.out.println(playerklondikeHand);
+                return playerHandRank;
+            }
+        } else {
+            playerklondikeHand = "Tie, house wins...";
+            playerHandRank = 0;
+        }
+        return playerHandRank;
+    }
 
+    public boolean isTwoPair(ArrayList<Integer> hand) {
+        HashSet<Integer> newHash = new HashSet<>(hand);
+        System.out.println(newHash);
+        return newHash.size() == 3;
+    }
 
-
-
+    public String getWinner() {
+        if (houseHandRank > playerHandRank) {
+            return "HOUSE WINS!!!!";
+        } else if (playerHandRank > houseHandRank) {
+            return "YOU WIN!!!";
+        } return "HOUSE WINS!!";
+    }
 
 
 
