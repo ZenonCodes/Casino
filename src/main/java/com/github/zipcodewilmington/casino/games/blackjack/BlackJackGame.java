@@ -12,10 +12,6 @@ import com.github.zipcodewilmington.casino.cards.Suit;
 
 import java.util.*;
 
-// ===== MVP
-//--------- simple, playable game
-//--------- no betting
-
 // ===== ADDITIONAL FEATURES
 //--------- bet at beginning
 //--------- additional wagers
@@ -30,10 +26,18 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     Integer[] sumDealer = {0};
     Rank rankD2;
     Suit suitD2;
+    BlackJackPlayer player; // TODO - confirm this works
+    int playerChips; // TODO - confirm this works
 
     public static void main(String[] args) {
         System.out.println("\n" + "WELCOME TO BLACKJACK" + "\n");
         BlackJackGame blackJackGame = new BlackJackGame();
+
+        // TODO place bet, must be less than player has -- maybe do this from outside of class???
+        // take bet
+        System.out.println("Your account balance is " + blackJackGame.playerChips + ". How much would " +
+                "you like to bet?");
+        //TODO - add int input method
 
         // generate and deal deck
         ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
@@ -43,6 +47,17 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         blackJackGame.sumStartingCards();
 
         // gameplay
+        if (blackJackGame.sumPlayer[0] == 21 && blackJackGame.sumDealer[0] == 21) {
+            // stand-off -- player takes back chips
+        } else if (blackJackGame.sumPlayer[0] < 21 && blackJackGame.sumDealer[0] == 21) {
+            // If the dealer has a natural, they collect the bets of all players who do not
+        } else if (blackJackGame.sumPlayer[0] == 21 && blackJackGame.sumDealer[0] < 21) {
+            // the dealer immediately pays that player one and a half times the amount of their bet.
+        } else if (blackJackGame.sumPlayer[0] < 21 && blackJackGame.sumDealer[0] < 21) {
+            // continue with game
+        }
+
+
         // TODO - write code for if starting player hand is 21
         // if 1 person has 21 vs both vs neither
         // TODO - how to handle ACE??? -- maybe option to add 10 later???
@@ -80,7 +95,6 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         System.out.println(dealerOutput);
 
         // ----- print winner
-        // TODO - code for if someoe breaks 21
         if (blackJackGame.sumPlayer[0] <= 21 && blackJackGame.sumDealer[0] <= 21) {
             if (blackJackGame.sumPlayer[0] > blackJackGame.sumDealer[0]) {
                 System.out.println("\n" + "PLAYER WINS");
@@ -91,12 +105,13 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             if (blackJackGame.sumPlayer[0] == blackJackGame.sumDealer[0]) {
                 System.out.println("\n" + "TIE");
             }
+        } else if (blackJackGame.sumPlayer[0] <= 21 && blackJackGame.sumDealer[0] > 21) {
+            System.out.println("\n" + "DEALER BUST - PLAYER WINS!");
+        } else if (blackJackGame.sumPlayer[0] > 21 && blackJackGame.sumDealer[0] <= 21) {
+            System.out.println("\n" + "PLAYER BUST - DEALER WINS!");
+        } else if (blackJackGame.sumPlayer[0] > 21 && blackJackGame.sumDealer[0] > 21) {
+            System.out.println("\n" + "PLAYER AND DEALER BUST");
         }
-
-        // print what happens to chips
-
-        // It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any
-        // other card is its pip value.
     }
 
     // =============== SUB-METHODS ===============
@@ -204,7 +219,10 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
 
     @Override
     public void addPlayer(BlackJackPlayer player) {
-
+        this.player = player;
+        playerChips = player.getAccountBalance();
+        // TODO - write this method, clear it when game is over, this is where we will pull
+        //  bet max from, also update balance at end
     }
 
     @Override
