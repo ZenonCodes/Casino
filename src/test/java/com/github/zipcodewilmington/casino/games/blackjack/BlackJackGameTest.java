@@ -155,4 +155,26 @@ class BlackJackGameTest {
         Assert.assertEquals(expectedSumPlayer, actualSumPlayer);
         Assert.assertEquals(expectedSumDealer, actualSumDealer);
     }
+
+    @Test
+    void buildOutputString() {
+        // Given
+        BlackJackGame blackJackGame = new BlackJackGame();
+        ArrayDeque<Cards> handPlayerTest = new ArrayDeque<Cards>();
+        Integer[] sumPlayerTest = {0};
+        Cards cardP1 = new Cards(Rank.JACK, Suit.HEARTS, 10);
+        Cards cardP2 = new Cards(Rank.KING, Suit.HEARTS, 12);
+        Cards cardP3 = new Cards(Rank.ACE, Suit.HEARTS, 13);
+        String expectedString = "PLAYER HAS JACK HEARTS, KING HEARTS, ACE HEARTS, TOTAL: 21";
+        // WHEN
+        handPlayerTest.add(cardP1);
+        blackJackGame.addCardToSum(cardP1, sumPlayerTest);
+        handPlayerTest.add(cardP2);
+        blackJackGame.addCardToSum(cardP2, sumPlayerTest);
+        handPlayerTest.add(cardP3);
+        blackJackGame.addCardToSum(cardP3, sumPlayerTest);
+        String actualString = blackJackGame.buildOutputString(handPlayerTest, sumPlayerTest);
+        // THEN
+        Assert.assertEquals(expectedString, actualString);
+    }
 }
