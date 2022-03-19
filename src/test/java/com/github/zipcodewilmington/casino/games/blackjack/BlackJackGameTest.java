@@ -201,4 +201,20 @@ class BlackJackGameTest {
         Assert.assertEquals(expected1, actual1);
         Assert.assertEquals(expected2, actual2);
     }
+
+    @Test
+    void checkForAceTest() {
+        // Given
+        BlackJackGame blackJackGame = new BlackJackGame();
+        Cards card1 = new Cards(Rank.JACK, Suit.HEARTS, 10);
+        Cards card2 = new Cards(Rank.ACE, Suit.HEARTS, 13);
+        String expected1 = "NO";
+        String expected2 = "YES";
+        // WHEN
+        String actual1 = blackJackGame.checkForAce(card1);
+        String actual2 = blackJackGame.checkForAce(card2);
+        // THEN
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+    }
 }

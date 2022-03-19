@@ -154,6 +154,17 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         return isNatural;
     }
 
+    public String checkForAce(Cards cardToBeChecked) {
+        String output = "";
+        int tierCard = cardToBeChecked.getTier();
+        if (tierCard == 13) { // ACE
+            output = "YES";
+        } else {
+            output = "NO";
+        }
+        return output;
+    }
+
     @Override
     public Boolean isOver() {
         return null;
@@ -214,7 +225,6 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             player.setAccountBalance(newPlayerBalance);
             return;
         } else if (naturalPlayer < 21 && naturalDealer < 21) {
-            // TODO - how to handle ACE??? -- maybe option to add 10 later???
             // ----- player's turn
             System.out.println("YOUR TURN" + "\n");
             while (sumPlayer[0] < 21) {
@@ -237,6 +247,24 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
                 System.out.println("DEALER STANDS" + "\n");
             } else {
                 System.out.println("DEALER STANDS" + "\n");
+            }
+
+            // TODO: if dealer has ace --- probably need to account for before now
+            // ACES
+            int handSize = handPlayer.size();
+            for (int a = 0; a < handSize; a++) {
+                Cards card = handPlayer.removeFirst();
+                Rank rank = card.getRank();
+                Suit suit = card.getSuit();
+                String isAce = checkForAce(card);
+                handPlayer.addLast(card);
+                if (isAce.equals("YES")) {
+                    System.out.println(rank + " " + suit);
+                    String inputAce = getStringInput("Use card as ONE or ELEVEN?");
+                    if (inputAce.equals("ELEVEN")) {
+                        sumPlayer[0] += 10;
+                    }
+                }
             }
 
             // declare winner
