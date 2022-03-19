@@ -29,91 +29,6 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     BlackJackPlayer player; // TODO - confirm this works
     int playerBet;
 
-    public static void main(String[] args) {
-        System.out.println("\n" + "WELCOME TO BLACKJACK" + "\n");
-        BlackJackGame blackJackGame = new BlackJackGame();
-
-        // take bet
-        blackJackGame.player.setBet();
-        blackJackGame.playerBet = blackJackGame.player.getBet();
-
-        // generate and deal deck
-        ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
-        blackJackGame.deal(deck);
-
-        // sum starting hands and check for naturals
-        blackJackGame.sumStartingCards();
-        int naturalPlayer = blackJackGame.checkForNatural(blackJackGame.handPlayer);
-        int naturalDealer = blackJackGame.checkForNatural(blackJackGame.handDealer);
-
-        // gameplay
-        if (blackJackGame.sumPlayer[0] == 21 && blackJackGame.sumDealer[0] == 21) {
-            // stand-off -- player takes back chips
-        } else if (blackJackGame.sumPlayer[0] < 21 && blackJackGame.sumDealer[0] == 21) {
-            // If the dealer has a natural, they collect the bets of all players who do not
-        } else if (blackJackGame.sumPlayer[0] == 21 && blackJackGame.sumDealer[0] < 21) {
-            // the dealer immediately pays that player one and a half times the amount of their bet.
-        } else if (blackJackGame.sumPlayer[0] < 21 && blackJackGame.sumDealer[0] < 21) {
-            // continue with game
-        }
-
-
-        // TODO - write code for if starting player hand is 21
-        // if 1 person has 21 vs both vs neither
-        // TODO - how to handle ACE??? -- maybe option to add 10 later???
-        // ----- player's turn
-        System.out.println("YOUR TURN" + "\n");
-        while (blackJackGame.sumPlayer[0] < 21) {
-            String playerInput = getStringInput("HIT or STAND");
-            if (playerInput.equals("HIT")) {
-                blackJackGame.hit(blackJackGame.handPlayer, deck, blackJackGame.sumPlayer);
-            } else if (playerInput.equals("STAND")) {
-            break;
-            }
-        }
-        // ----- dealer's turn
-        System.out.println("\n" + "DEALER'S TURN" + "\n");
-        System.out.println("DEALER'S BOTTOM CARD: " + blackJackGame.rankD2 + " " +
-                blackJackGame.suitD2 + "\n");
-        if (blackJackGame.sumDealer[0] < 17) {
-            while (blackJackGame.sumDealer[0] < 17) {
-                System.out.println("DEALER HITS" + "\n");
-                blackJackGame.hit(blackJackGame.handDealer, deck, blackJackGame.sumDealer);
-            }
-            System.out.println("DEALER STANDS" + "\n");
-        } else {
-            System.out.println("DEALER STANDS" + "\n");
-        }
-
-        // declare winner
-        // ----- print hands and totals
-        String playerOutput = blackJackGame.buildOutputString(blackJackGame.handPlayer,
-                blackJackGame.sumPlayer);
-        System.out.println(playerOutput);
-        String dealerOutput = blackJackGame.buildOutputString(blackJackGame.handDealer,
-                blackJackGame.sumDealer);
-        System.out.println(dealerOutput);
-
-        // ----- print winner
-        if (blackJackGame.sumPlayer[0] <= 21 && blackJackGame.sumDealer[0] <= 21) {
-            if (blackJackGame.sumPlayer[0] > blackJackGame.sumDealer[0]) {
-                System.out.println("\n" + "PLAYER WINS");
-            }
-            if (blackJackGame.sumPlayer[0] < blackJackGame.sumDealer[0]) {
-                System.out.println("\n" + "DEALER WINS");
-            }
-            if (blackJackGame.sumPlayer[0] == blackJackGame.sumDealer[0]) {
-                System.out.println("\n" + "TIE");
-            }
-        } else if (blackJackGame.sumPlayer[0] <= 21 && blackJackGame.sumDealer[0] > 21) {
-            System.out.println("\n" + "DEALER BUST - PLAYER WINS!");
-        } else if (blackJackGame.sumPlayer[0] > 21 && blackJackGame.sumDealer[0] <= 21) {
-            System.out.println("\n" + "PLAYER BUST - DEALER WINS!");
-        } else if (blackJackGame.sumPlayer[0] > 21 && blackJackGame.sumDealer[0] > 21) {
-            System.out.println("\n" + "PLAYER AND DEALER BUST");
-        }
-    }
-
     // =============== SUB-METHODS ===============
     public static String getStringInput(String prompt) { // no test
         Scanner scanner = new Scanner(System.in);
@@ -256,6 +171,83 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
 
     @Override
     public void run() {
+        System.out.println("\n" + "WELCOME TO BLACKJACK" + "\n");
 
+        // take bet
+        player.setBet();
+        playerBet = player.getBet();
+
+        // generate and deal deck
+        ArrayDeque<Cards> deck = generateBlackJackDeck();
+        deal(deck);
+
+        // sum starting hands and check for naturals
+        sumStartingCards();
+        int naturalPlayer = checkForNatural(handPlayer);
+        int naturalDealer = checkForNatural(handDealer);
+
+        // gameplay
+        if (naturalPlayer == 21 && naturalDealer == 21) {
+            // stand-off -- player takes back chips
+        } else if (naturalPlayer < 21 && naturalDealer == 21) {
+            // If the dealer has a natural, they collect the bets of all players who do not
+        } else if (naturalPlayer == 21 && naturalDealer < 21) {
+            // the dealer immediately pays that player one and a half times the amount of their bet.
+        } else if (naturalPlayer < 21 && naturalDealer < 21) {
+            // continue with game
+        }
+
+        // TODO - write code for if starting player hand is 21
+        // if 1 person has 21 vs both vs neither
+        // TODO - how to handle ACE??? -- maybe option to add 10 later???
+        // ----- player's turn
+        System.out.println("YOUR TURN" + "\n");
+        while (sumPlayer[0] < 21) {
+            String playerInput = getStringInput("HIT or STAND");
+            if (playerInput.equals("HIT")) {
+                hit(handPlayer, deck, sumPlayer);
+            } else if (playerInput.equals("STAND")) {
+                break;
+            }
+        }
+        // ----- dealer's turn
+        System.out.println("\n" + "DEALER'S TURN" + "\n");
+        System.out.println("DEALER'S BOTTOM CARD: " + rankD2 + " " +
+                suitD2 + "\n");
+        if (sumDealer[0] < 17) {
+            while (sumDealer[0] < 17) {
+                System.out.println("DEALER HITS" + "\n");
+                hit(handDealer, deck, sumDealer);
+            }
+            System.out.println("DEALER STANDS" + "\n");
+        } else {
+            System.out.println("DEALER STANDS" + "\n");
+        }
+
+        // declare winner
+        // ----- print hands and totals
+        String playerOutput = buildOutputString(handPlayer, sumPlayer);
+        System.out.println(playerOutput);
+        String dealerOutput = buildOutputString(handDealer, sumDealer);
+        System.out.println(dealerOutput);
+
+        // ----- print winner
+        if (sumPlayer[0] <= 21 && sumDealer[0] <= 21) {
+            if (sumPlayer[0] > sumDealer[0]) {
+                System.out.println("\n" + "PLAYER WINS");
+            }
+            if (sumPlayer[0] < sumDealer[0]) {
+                System.out.println("\n" + "DEALER WINS");
+            }
+            if (sumPlayer[0] == sumDealer[0]) {
+                System.out.println("\n" + "TIE");
+            }
+        } else if (sumPlayer[0] <= 21 && sumDealer[0] > 21) {
+            System.out.println("\n" + "DEALER BUST - PLAYER WINS!");
+        } else if (sumPlayer[0] > 21 && sumDealer[0] <= 21) {
+            System.out.println("\n" + "PLAYER BUST - DEALER WINS!");
+        } else if (sumPlayer[0] > 21 && sumDealer[0] > 21) {
+            System.out.println("\n" + "PLAYER AND DEALER BUST");
+        }
     }
 }
