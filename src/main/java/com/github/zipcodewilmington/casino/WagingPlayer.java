@@ -3,9 +3,9 @@ package com.github.zipcodewilmington.casino;
 import java.util.Scanner;
 
 public abstract class WagingPlayer extends Player {
+    Scanner scanner = new Scanner(System.in);
     int accountBalance = 50000;
     int bet;
-    Scanner scanner = new Scanner(System.in);
 
     public int getAccountBalance() {
         return accountBalance;

@@ -1,10 +1,18 @@
 package com.github.zipcodewilmington;
 
 import com.github.zipcodewilmington.casino.*;
+import com.github.zipcodewilmington.casino.games.blackjack.BlackJackGame;
+import com.github.zipcodewilmington.casino.games.blackjack.BlackJackPlayer;
+import com.github.zipcodewilmington.casino.games.craps.CrapsGame;
+import com.github.zipcodewilmington.casino.games.craps.CrapsPlayer;
+import com.github.zipcodewilmington.casino.games.klondike.KlondikeGame;
+import com.github.zipcodewilmington.casino.games.klondike.KlondikePlayer;
 import com.github.zipcodewilmington.casino.games.numberguess.NumberGuessGame;
 import com.github.zipcodewilmington.casino.games.numberguess.NumberGuessPlayer;
 import com.github.zipcodewilmington.casino.games.slots.SlotsGame;
 import com.github.zipcodewilmington.casino.games.slots.SlotsPlayer;
+import com.github.zipcodewilmington.casino.games.war.WarGame;
+import com.github.zipcodewilmington.casino.games.war.WarPlayer;
 import com.github.zipcodewilmington.utils.AnsiColor;
 import com.github.zipcodewilmington.utils.IOConsole;
 
@@ -37,6 +45,14 @@ public class Casino implements Runnable {
                         play(new SlotsGame(), new SlotsPlayer(), accountName);
                     } else if (gameSelectionInput.equals("NUMBERGUESS")) {
                         play(new NumberGuessGame(), new NumberGuessPlayer(), accountName);
+                    } else if (gameSelectionInput.equals("BLACKJACK")) {
+                        play(new BlackJackGame(), new BlackJackPlayer(), accountName);
+                    } else if (gameSelectionInput.equals("KLONDIKE")) {
+                        play(new KlondikeGame(), new KlondikePlayer(), accountName);
+                    }else if (gameSelectionInput.equals("CRAPS")) {
+                        play(new CrapsGame(), new CrapsPlayer(), accountName);
+                    }else if (gameSelectionInput.equals("WAR")) {
+                        play(new WarGame(), new WarPlayer(), accountName);
                     } else {
                         // TODO - implement better exception handling
                         String errorMessage = "[ %s ] is an invalid game selection";
