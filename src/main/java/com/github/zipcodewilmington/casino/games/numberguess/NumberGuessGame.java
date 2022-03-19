@@ -30,9 +30,15 @@ public class NumberGuessGame extends WagingGame implements GameInterface<NumberG
             return MSG_WINNER;
 
         } else if (guess > num) {
+            player.setAccountBalance(player.getAccountBalance() - getPot());
+            player.getCasinoAccount().setAccountBalance(player.getAccountBalance());
+            isOver();
             return MSG_TOO_HIGH;
 
         } else {
+            player.setAccountBalance(player.getAccountBalance() - getPot());
+            player.getCasinoAccount().setAccountBalance(player.getAccountBalance());
+            isOver();
             return MSG_TOO_LOW;
         }
     }
