@@ -212,6 +212,13 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         return output;
     }
 
+    public static int getIntInput(String prompt) { // no test
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(prompt);
+        int userIntInput = scanner.nextInt();
+        return userIntInput;
+    }
+
     @Override
     public Boolean isOver() {
         return null;
