@@ -2,28 +2,14 @@ package com.github.zipcodewilmington.casino.games.klondike;
 
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.WagingGame;
+import com.github.zipcodewilmington.casino.WagingPlayer;
 import com.github.zipcodewilmington.casino.dice.Dice;
 
 import java.util.*;
 
 public class KlondikeGame extends WagingGame implements GameInterface<KlondikePlayer> {
-
-    /*
-    given
-    house roll
-    player roll
-
-    dice roll of 1 is the highest score, then 6, 5, 4, 3, 2
-    scoring is:
-    five of a kind
-    four of a kind
-    full house (3 of a kind, pair
-    three of a kind
-    two pair
-    one pair
-    house rolls, if tie, house wins
-    */
-
+    Scanner scanner = new Scanner(System.in);
+    WagingPlayer player = new KlondikePlayer();
     ArrayList<Integer> houseRoll = new ArrayList<>();
     ArrayList<Integer> playerRoll = new ArrayList<>();
     HashMap<String, Integer> houseHand = new HashMap<>();
@@ -32,20 +18,48 @@ public class KlondikeGame extends WagingGame implements GameInterface<KlondikePl
     String playerklondikeHand = "";
     int houseHandRank;
     int playerHandRank;
+    String WinMsg = "";
 
-    //Dice dice = new Dice(5);
+    public void klondikeGame () {
+        System.out.println("You have " + player.getAccountBalance() + " to bet.\n");
+        player.setBet();
+        getWagers(player.getBet());
+        System.out.println("Press any key to roll the dice...\n");
+        String roll = scanner.next();
+        if (roll != null){
+            getPlayerRoll();
+        }
+        evaluatePlayerHand();
+        getPlayerKlondikeHand();
+        System.out.println("You have " + playerklondikeHand + " !\n");
+        playerRoll.clear();
+        getHouseRoll();
+        evaluateHouseHand();
+        getKlondikeHand();
+        System.out.println("The house has " + klondikeHand + " !\n");
+        houseRoll.clear();
+        getWinner();
+        System.out.println(WinMsg);
+        System.out.println("\n");
+        System.out.println("You now have " + player.getAccountBalance() + " to bet.\n");
+        System.out.println("Play again? Y or N ? \n");
+        String choice = scanner.next().toUpperCase();
+        if (choice.equals("Y")) {
+            klondikeGame();
+        } else {
+            isOver();
+        }
+    }
 
     public ArrayList<Integer> getHouseRoll() {
         houseRoll = Dice.roll(5);
         Collections.sort(houseRoll);
-        System.out.println(houseRoll);
         return houseRoll;
     }
 
     public ArrayList<Integer> getPlayerRoll() {
         playerRoll = Dice.roll(5);
         Collections.sort(playerRoll);
-        System.out.println(playerRoll);
         return playerRoll;
     }
 
@@ -56,7 +70,6 @@ public class KlondikeGame extends WagingGame implements GameInterface<KlondikePl
         houseHand.put("fours", Collections.frequency(houseRoll, 4));
         houseHand.put("fives", Collections.frequency(houseRoll, 5));
         houseHand.put("sixes", Collections.frequency(houseRoll, 6));
-        System.out.println(houseHand);
         return houseHand;
 
     }
@@ -66,36 +79,30 @@ public class KlondikeGame extends WagingGame implements GameInterface<KlondikePl
         if (houseHand.containsValue(5)) {
             klondikeHand = "Five of a Kind";
             houseHandRank = 6;
-            System.out.println(klondikeHand);
             return houseHandRank;
         } else if (houseHand.containsValue(4)) {
             klondikeHand = "Four of a Kind";
             houseHandRank = 5;
-            System.out.println(klondikeHand);
             return houseHandRank;
         } else if (houseHand.containsValue(3) && houseHand.containsValue(2)) {
-            klondikeHand = "Full House";
+            klondikeHand = " a Full House";
             houseHandRank = 4;
-            System.out.println(klondikeHand);
             return houseHandRank;
         } else if (houseHand.containsValue(3)) {
             klondikeHand = "Three of a Kind";
             houseHandRank = 3;
-            System.out.println(klondikeHand);
             return houseHandRank;
         } else if (houseHand.containsValue(2)) {
             if (isTwoPair(houseRoll)) {
                 klondikeHand = "Two Pair";
                 houseHandRank = 2;
-                System.out.println(klondikeHand);
             } else {
-                klondikeHand = "Pair";
+                klondikeHand = " a Pair";
                 houseHandRank = 1;
-                System.out.println(klondikeHand);
                 return houseHandRank;
             }
         } else {
-            klondikeHand = "Tie, house wins...";
+            klondikeHand = "Tied, the house wins...";
             houseHandRank = 7;
         }
         return houseHandRank;
@@ -108,7 +115,6 @@ public class KlondikeGame extends WagingGame implements GameInterface<KlondikePl
         playerHand.put("fours", Collections.frequency(playerRoll, 4));
         playerHand.put("fives", Collections.frequency(playerRoll, 5));
         playerHand.put("sixes", Collections.frequency(playerRoll, 6));
-        System.out.println(playerHand);
         return playerHand;
     }
 
@@ -117,36 +123,30 @@ public class KlondikeGame extends WagingGame implements GameInterface<KlondikePl
         if (playerHand.containsValue(5)) {
             playerklondikeHand = "Five of a Kind";
             playerHandRank = 6;
-            System.out.println(playerklondikeHand);
             return playerHandRank;
         } else if (playerHand.containsValue(4)) {
             playerklondikeHand = "Four of a Kind";
             playerHandRank = 5;
-            System.out.println(playerklondikeHand);
             return playerHandRank;
         } else if (playerHand.containsValue(3) && houseHand.containsValue(2)) {
-            playerklondikeHand = "Full House";
+            playerklondikeHand = " a Full House";
             playerHandRank = 4;
-            System.out.println(playerklondikeHand);
             return playerHandRank;
         } else if (playerHand.containsValue(3)) {
             playerklondikeHand = "Three of a Kind";
             playerHandRank = 3;
-            System.out.println(playerklondikeHand);
             return playerHandRank;
         } else if (playerHand.containsValue(2)) {
             if (isTwoPair(playerRoll)) {
                 playerklondikeHand = "Two Pair";
                 playerHandRank = 2;
-                System.out.println(playerklondikeHand);
             } else {
-                playerklondikeHand = "Pair";
+                playerklondikeHand = " a Pair";
                 playerHandRank = 1;
-                System.out.println(playerklondikeHand);
                 return playerHandRank;
             }
         } else {
-            playerklondikeHand = "Tie, house wins...";
+            playerklondikeHand = "Tied, the house wins...";
             playerHandRank = 0;
         }
         return playerHandRank;
@@ -154,28 +154,38 @@ public class KlondikeGame extends WagingGame implements GameInterface<KlondikePl
 
     public boolean isTwoPair(ArrayList<Integer> hand) {
         HashSet<Integer> newHash = new HashSet<>(hand);
-        System.out.println(newHash);
         return newHash.size() == 3;
     }
 
     public String getWinner() {
         if (houseHandRank > playerHandRank) {
-            return "HOUSE WINS!!!!";
+            player.setAccountBalance(player.getAccountBalance() - getPot());
+            player.getCasinoAccount().setAccountBalance(player.getAccountBalance());
+            WinMsg = "HOUSE WINS!!!!";
+            return WinMsg;
         } else if (playerHandRank > houseHandRank) {
-            return "YOU WIN!!!";
-        } return "HOUSE WINS!!";
+            player.setAccountBalance(player.getAccountBalance() + getPot());
+            player.getCasinoAccount().setAccountBalance(player.getAccountBalance());
+            WinMsg = "YOU WIN!!!";
+            return WinMsg;
+        } else {
+            player.setAccountBalance(player.getAccountBalance() - getPot());
+            player.getCasinoAccount().setAccountBalance(player.getAccountBalance());
+            WinMsg = "TIE, SO THE HOUSE WINS!!!!";
+            return WinMsg;
+        }
     }
 
 
 
     @Override
     public Boolean isOver() {
-        return null;
+        return true;
     }
 
     @Override
     public void addPlayer(KlondikePlayer player) {
-
+        this.player = player;
     }
 
     @Override
@@ -195,6 +205,6 @@ public class KlondikeGame extends WagingGame implements GameInterface<KlondikePl
 
     @Override
     public void run() {
-
+        klondikeGame();
     }
 }
