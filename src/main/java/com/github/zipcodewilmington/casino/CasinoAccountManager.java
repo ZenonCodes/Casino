@@ -66,7 +66,7 @@ public class CasinoAccountManager {
         casinoAccountList.add(casinoAccount);
         accountsMap.put(accountUsername,casinoAccount);
 
-//        System.out.println("Your account " + "\"" + casinoAccount.getAccountName() + "\"" + " has been registered.");
+        System.out.println("Your account " + "\"" + casinoAccount.getAccountName() + "\"" + " has been registered.");
     }
 
     public CasinoAccount getAccountByUsername(String accountName){

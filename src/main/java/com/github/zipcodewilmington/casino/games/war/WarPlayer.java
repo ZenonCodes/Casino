@@ -4,10 +4,6 @@ import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.Player;
 
 public class WarPlayer extends Player {
-    @Override
-    public CasinoAccount getCasinoAccount() {
-        return this.casinoAccount;
-    }
 
     @Override
     public <SomeReturnType> SomeReturnType play() {

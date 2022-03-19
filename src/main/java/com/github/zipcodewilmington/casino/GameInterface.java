@@ -14,6 +14,7 @@ public interface GameInterface<PlayerType extends PlayerInterface> extends Runna
      */
     void addPlayer(PlayerType player);
 
+
     /**
      * adds players to the game
      * @param player the players to be added to the game

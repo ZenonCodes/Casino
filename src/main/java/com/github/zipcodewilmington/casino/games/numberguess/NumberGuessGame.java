@@ -1,7 +1,9 @@
 package com.github.zipcodewilmington.casino.games.numberguess;
 
+import com.github.zipcodewilmington.Casino;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.WagingGame;
+import com.github.zipcodewilmington.casino.WagingPlayer;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,42 +14,46 @@ import java.util.Scanner;
 public class NumberGuessGame extends WagingGame implements GameInterface<NumberGuessPlayer> {
 
     Scanner scanner = new Scanner(System.in); //Scanner Class
+    WagingPlayer player = new NumberGuessPlayer();
     private final int num = 1 + (int) (10 * Math.random());// Computer Choice
     public static final String MSG_WINNER = "Jackpot!!!!!";
     public static final String MSG_TOO_HIGH = "Guess too high, the house wins!";
     public static final String MSG_TOO_LOW = "Guess too low, the house wins!";
-    private boolean isOver = false;
+    public boolean isOver = false;
 
-
-
-
-    //Actual Game
-    public String numberGuessgame(){
-        do {
-            System.out.println("Pick a number between 1 and 10");
-            int guess = scanner.nextInt();
-            scanner.close();
-            return findWinner(guess, num);
-
-        } while(isOver);
-
-    }
 
     public String findWinner(int guess, int num) {
         if (guess == num) {
-            this.isOver = true;
+            player.setAccountBalance(player.getAccountBalance() + getPot());
+            player.getCasinoAccount().setAccountBalance(player.getAccountBalance());
+            isOver();
             return MSG_WINNER;
 
         } else if (guess > num) {
-            this.isOver = false;
             return MSG_TOO_HIGH;
 
         } else {
-            this.isOver = false;
             return MSG_TOO_LOW;
-
         }
     }
+
+
+    //Actual Game
+    public void numberGuessGame(){
+        int guess;
+        player.setBet();
+        getWagers(player.getBet());
+
+        do {
+            System.out.println("Pick a number between 1 and 10");
+            guess = scanner.nextInt();
+            findWinner(guess, num);
+
+        } while(!isOver);
+
+
+    }
+
 
 
     @Override
@@ -58,6 +64,7 @@ public class NumberGuessGame extends WagingGame implements GameInterface<NumberG
 
     @Override
     public void addPlayer(NumberGuessPlayer player) {
+        this.player = player;
 
     }
 
@@ -78,6 +85,6 @@ public class NumberGuessGame extends WagingGame implements GameInterface<NumberG
 
     @Override
     public void run() {
-        numberGuessgame();
+        numberGuessGame();
     }
 }
