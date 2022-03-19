@@ -14,7 +14,6 @@ import java.util.*;
 
 // ===== MVP
 //--------- simple, playable game
-//--------- one player vs the house
 //--------- no betting
 
 // ===== ADDITIONAL FEATURES
@@ -44,9 +43,7 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         blackJackGame.sumStartingCards();
 
         // gameplay
-        // TODO - code how game ends (while loop?) - need to loop thru this so can hit multiple times
         // TODO - write code for if starting player hand is 21
-        // sum cards -- might have to adjust hit method and test to include sum adjustment
         // if 1 person has 21 vs both vs neither
         // TODO - how to handle ACE??? -- maybe option to add 10 later???
         // ----- player's turn
@@ -71,8 +68,18 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             System.out.println("DEALER STANDS" + "\n");
         } else {
             System.out.println("DEALER STANDS" + "\n");
-            System.out.println("DEALER HAS " + blackJackGame.sumDealer[0]);
         }
+
+        // declare winner
+        // ----- print hands and totals
+        String playerOutput = blackJackGame.buildOutputString(blackJackGame.handPlayer,
+                blackJackGame.sumPlayer); // TODO - test
+        System.out.println(playerOutput);
+        String dealerOutput = blackJackGame.buildOutputString(blackJackGame.handDealer,
+                blackJackGame.sumDealer);
+        System.out.println(dealerOutput);
+        // print winner
+        // print what happens to chips
 
         // It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any
         // other card is its pip value.
@@ -159,6 +166,21 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         addCardToSum(playerCard2, sumPlayer);
         addCardToSum(dealerCard1, sumDealer);
         addCardToSum(dealerCard2, sumDealer);
+    }
+
+    public String buildOutputString(ArrayDeque<Cards> handToConvert, Integer[] sum) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("PLAYER HAS ");
+        int size = handToConvert.size();
+        for (int i = 0; i < size; i++) {
+            Cards card = handToConvert.removeFirst();
+            Rank rank = card.getRank();
+            Suit suit = card.getSuit();
+            sb.append(rank + " " + suit + ", ");
+        }
+        sb.append("TOTAL: " + sum[0]);
+        String output = sb.toString();
+        return output;
     }
 
     @Override
