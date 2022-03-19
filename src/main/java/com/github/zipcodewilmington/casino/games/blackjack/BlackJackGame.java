@@ -3,6 +3,7 @@ package com.github.zipcodewilmington.casino.games.blackjack;
 
 
 import com.github.zipcodewilmington.casino.GameInterface;
+import com.github.zipcodewilmington.casino.Player;
 import com.github.zipcodewilmington.casino.WagingGame;
 
 import com.github.zipcodewilmington.casino.cards.Cards;
@@ -27,6 +28,8 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     Suit suitD2;
     BlackJackPlayer player;
     int playerBet;
+    int winnings;
+    int newPlayerBalance;
 
     // =============== SUB-METHODS ===============
     public static String getStringInput(String prompt) { // no test
@@ -213,17 +216,20 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             return;
         } else if (naturalPlayer < 21 && naturalDealer == 21) {
             System.out.println("DEALER HAS NATURAL, PLAYER HAS " + sumPlayer[0] + ". PLAYER LOSES.");
-            int newPlayerBalance = playerBalance - playerBet;
-            player.setAccountBalance(newPlayerBalance);
+            newPlayerBalance = playerBalance - playerBet;
+            // player.setAccountBalance(newPlayerBalance);
+            player.getCasinoAccount().setAccountBalance(newPlayerBalance);
             return;
         } else if (naturalPlayer == 21 && naturalDealer < 21) {
-            int winnings = (int) (playerBet * 1.5);
+            winnings = (int) (playerBet * 1.5);
             System.out.println("PLAYER HAS NATURAL, DEALER HAS " + sumDealer[0] + ". PLAYER WINS " +
                     winnings);
-            int newPlayerBalance = playerBalance + winnings;
-            player.setAccountBalance(newPlayerBalance);
+            newPlayerBalance = playerBalance + winnings;
+            // player.setAccountBalance(newPlayerBalance);
+            player.getCasinoAccount().setAccountBalance(newPlayerBalance);
             return;
         } else if (naturalPlayer < 21 && naturalDealer < 21) {
+            // PROCEED WITH GAMEPLAY:
             // ----- player's turn
             System.out.println("YOUR TURN" + "\n");
             while (sumPlayer[0] < 21) {
@@ -273,25 +279,33 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             String dealerOutput = buildOutputString(handDealer, sumDealer);
             System.out.println(dealerOutput);
 
-            // ----- print winner
+            // ----- print winner and update account balance
             if (sumPlayer[0] <= 21 && sumDealer[0] <= 21) {
                 if (sumPlayer[0] > sumDealer[0]) {
                     System.out.println("\n" + "PLAYER WINS");
+                    winnings = (int) (playerBet * 1.5);
+                    newPlayerBalance = playerBalance + winnings;
+                    player.getCasinoAccount().setAccountBalance(newPlayerBalance);
                 }
                 if (sumPlayer[0] < sumDealer[0]) {
                     System.out.println("\n" + "DEALER WINS");
+                    newPlayerBalance = playerBalance - playerBet;
+                    player.getCasinoAccount().setAccountBalance(newPlayerBalance);
                 }
                 if (sumPlayer[0] == sumDealer[0]) {
                     System.out.println("\n" + "TIE");
                 }
             } else if (sumPlayer[0] <= 21 && sumDealer[0] > 21) {
                 System.out.println("\n" + "DEALER BUST - PLAYER WINS!" + "\n");
+                winnings = (int) (playerBet * 1.5);
+                newPlayerBalance = playerBalance + winnings;
+                player.getCasinoAccount().setAccountBalance(newPlayerBalance);
             } else if (sumPlayer[0] > 21 && sumDealer[0] <= 21) {
                 System.out.println("\n" + "PLAYER BUST - DEALER WINS!" + "\n");
+                newPlayerBalance = playerBalance - playerBet;
+                player.getCasinoAccount().setAccountBalance(newPlayerBalance);
             } else if (sumPlayer[0] > 21 && sumDealer[0] > 21) {
                 System.out.println("\n" + "PLAYER AND DEALER BUST" + "\n");
-
-                // TODO - update account balance at end - not already coded for, correct?
             }
         }
     }
