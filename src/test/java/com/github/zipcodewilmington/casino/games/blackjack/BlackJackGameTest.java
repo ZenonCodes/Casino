@@ -177,4 +177,28 @@ class BlackJackGameTest {
         // THEN
         Assert.assertEquals(expectedString, actualString);
     }
+
+    @Test
+    void checkForNatural() {
+        // Given
+        BlackJackGame blackJackGame = new BlackJackGame();
+        ArrayDeque<Cards> handPlayerTestNatural1 = new ArrayDeque<Cards>();
+        ArrayDeque<Cards> handPlayerTestNatural2 = new ArrayDeque<Cards>();
+        Cards cardP11 = new Cards(Rank.JACK, Suit.HEARTS, 10);
+        Cards cardP12 = new Cards(Rank.ACE, Suit.HEARTS, 13);
+        Cards cardP21 = new Cards(Rank.SEVEN, Suit.HEARTS, 6);
+        Cards cardP22 = new Cards(Rank.ACE, Suit.HEARTS, 13);
+        int expected1 = 21;
+        int expected2 = 18;
+        // WHEN
+        handPlayerTestNatural1.add(cardP11);
+        handPlayerTestNatural1.add(cardP12);
+        handPlayerTestNatural2.add(cardP21);
+        handPlayerTestNatural2.add(cardP22);
+        int actual1 = blackJackGame.checkForNatural(handPlayerTestNatural1);
+        int actual2 = blackJackGame.checkForNatural(handPlayerTestNatural2);
+        // THEN
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+    }
 }
