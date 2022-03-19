@@ -26,8 +26,8 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     Boolean isCardGame = true;
     ArrayDeque<Cards> handPlayer = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handDealer = new ArrayDeque<Cards>();
-    Integer[] sumPlayer = {0}; // TODO - clear at end???
-    Integer[] sumDealer = {0}; // TODO - clear at end???
+    Integer[] sumPlayer = {0};
+    Integer[] sumDealer = {0};
     Rank rankD2;
     Suit suitD2;
 
@@ -78,7 +78,21 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         String dealerOutput = blackJackGame.buildOutputString(blackJackGame.handDealer,
                 blackJackGame.sumDealer);
         System.out.println(dealerOutput);
-        // print winner
+
+        // ----- print winner
+        // TODO - code for if someoe breaks 21
+        if (blackJackGame.sumPlayer[0] <= 21 && blackJackGame.sumDealer[0] <= 21) {
+            if (blackJackGame.sumPlayer[0] > blackJackGame.sumDealer[0]) {
+                System.out.println("\n" + "PLAYER WINS");
+            }
+            if (blackJackGame.sumPlayer[0] < blackJackGame.sumDealer[0]) {
+                System.out.println("\n" + "DEALER WINS");
+            }
+            if (blackJackGame.sumPlayer[0] == blackJackGame.sumDealer[0]) {
+                System.out.println("\n" + "TIE");
+            }
+        }
+
         // print what happens to chips
 
         // It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any
