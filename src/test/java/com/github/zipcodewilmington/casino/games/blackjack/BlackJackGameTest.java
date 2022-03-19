@@ -70,12 +70,13 @@ class BlackJackGameTest {
         // Given
         BlackJackGame blackJackGame = new BlackJackGame();
         ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
+        Integer[] testSumPlayerHit = {0};
         int expectedSizePlayer = 3;
         int expectedSizeDealer = 2;
         int expectedSizeDeck = 47;
         // When
         blackJackGame.deal(deck);
-        blackJackGame.hit(blackJackGame.handPlayer, deck);
+        blackJackGame.hit(blackJackGame.handPlayer, deck, testSumPlayerHit);
         int actualSizePlayer = blackJackGame.handPlayer.size();
         blackJackGame.handPlayer.clear();
         int actualSizeDealer = blackJackGame.handDealer.size();
@@ -86,6 +87,7 @@ class BlackJackGameTest {
         Assert.assertEquals(expectedSizePlayer, actualSizePlayer);
         Assert.assertEquals(expectedSizeDealer, actualSizeDealer);
         Assert.assertEquals(expectedSizeDeck, actualSizeDeck);
+        Assert.assertTrue(testSumPlayerHit[0] > 0);
     }
 
     @Test
