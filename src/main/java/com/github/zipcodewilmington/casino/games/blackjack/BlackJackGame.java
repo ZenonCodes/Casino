@@ -28,16 +28,23 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     Suit suitD2;
     BlackJackPlayer player; // TODO - confirm this works
     int playerChips; // TODO - confirm this works
+    int playerBet;
 
     public static void main(String[] args) {
         System.out.println("\n" + "WELCOME TO BLACKJACK" + "\n");
         BlackJackGame blackJackGame = new BlackJackGame();
 
-        // TODO place bet, must be less than player has -- maybe do this from outside of class???
         // take bet
-        System.out.println("Your account balance is " + blackJackGame.playerChips + ". How much would " +
-                "you like to bet?");
-        //TODO - add int input method
+        int takeBetStatus = 0;
+        while (takeBetStatus == 0) {
+            blackJackGame.playerBet = getIntInput("Your account balance is " +
+                    blackJackGame.playerChips + ". How much would you like to bet?");
+            if (blackJackGame.playerBet >= 0 && blackJackGame.playerBet <= blackJackGame.playerChips) {
+                takeBetStatus = 1;
+            } else {
+                System.out.println("INVALID ENTRY");
+            }
+        }
 
         // generate and deal deck
         ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
