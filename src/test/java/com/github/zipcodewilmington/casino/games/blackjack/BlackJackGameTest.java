@@ -217,4 +217,36 @@ class BlackJackGameTest {
         Assert.assertEquals(expected1, actual1);
         Assert.assertEquals(expected2, actual2);
     }
+
+    @Test
+    void dealerAceDecision() {
+        // Given
+        BlackJackGame blackJackGame = new BlackJackGame();
+        Cards card1 = new Cards(Rank.NINE, Suit.HEARTS, 8);
+        Cards card2 = new Cards(Rank.ACE, Suit.HEARTS, 13);
+        Cards card3 = new Cards(Rank.FOUR, Suit.HEARTS, 3);
+        Cards card4 = new Cards(Rank.ACE, Suit.CLUBS, 13);
+        int expected1 = 20;
+        int expected2 = 5;
+        // WHEN
+        blackJackGame.handDealer.add(card1);
+        blackJackGame.addCardToSum(card1, blackJackGame.sumDealer);
+        blackJackGame.handDealer.add(card2);
+        blackJackGame.addCardToSum(card2, blackJackGame.sumDealer);
+        blackJackGame.dealerAceDecision();
+        int actual1 = blackJackGame.sumDealer[0];
+        blackJackGame.handDealer.clear();
+        blackJackGame.sumDealer[0] = 0;
+        blackJackGame.handDealer.add(card3);
+        blackJackGame.addCardToSum(card3, blackJackGame.sumDealer);
+        blackJackGame.handDealer.add(card4);
+        blackJackGame.addCardToSum(card4, blackJackGame.sumDealer);
+        blackJackGame.dealerAceDecision();
+        int actual2 = blackJackGame.sumDealer[0];
+        blackJackGame.handDealer.clear();
+        blackJackGame.sumDealer[0] = 0;
+        // THEN
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+    }
 }

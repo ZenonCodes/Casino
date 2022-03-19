@@ -3,6 +3,7 @@ package com.github.zipcodewilmington.casino.games.blackjack;
 
 
 import com.github.zipcodewilmington.casino.GameInterface;
+import com.github.zipcodewilmington.casino.Player;
 import com.github.zipcodewilmington.casino.WagingGame;
 
 import com.github.zipcodewilmington.casino.cards.Cards;
@@ -16,6 +17,7 @@ import java.util.*;
 //--------- additional wagers
 //--------- splitting pairs
 //--------- doubling down
+// ===== TODO: account balance doesn't seem to carry over between multiple games
 
 public class BlackJackGame extends WagingGame implements GameInterface<BlackJackPlayer> {
     Boolean isCardGame = true;
@@ -27,6 +29,8 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     Suit suitD2;
     BlackJackPlayer player;
     int playerBet;
+    int winnings;
+    int newPlayerBalance;
 
     // =============== SUB-METHODS ===============
     public static String getStringInput(String prompt) { // no test
@@ -153,7 +157,7 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         return isNatural;
     }
 
-    public String checkForAce(Cards cardToBeChecked) {
+    public String checkForAce(Cards cardToBeChecked) { // tested
         String output = "";
         int tierCard = cardToBeChecked.getTier();
         if (tierCard == 13) { // ACE
@@ -162,6 +166,20 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             output = "NO";
         }
         return output;
+    }
+
+    public void dealerAceDecision() {
+        int handSizeDealer = handDealer.size();
+        for (int a = 0; a < handSizeDealer; a++) {
+            Cards card = handDealer.removeFirst();
+            String isAce = checkForAce(card);
+            handDealer.addLast(card);
+            if (isAce.equals("YES")) {
+                if (sumDealer[0] + 10 <= 21 && sumDealer[0] + 10 >= 17) {
+                    sumDealer[0] += 10;
+                }
+            }
+        }
     }
 
     @Override
@@ -213,17 +231,20 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             return;
         } else if (naturalPlayer < 21 && naturalDealer == 21) {
             System.out.println("DEALER HAS NATURAL, PLAYER HAS " + sumPlayer[0] + ". PLAYER LOSES.");
-            int newPlayerBalance = playerBalance - playerBet;
-            player.setAccountBalance(newPlayerBalance);
+            newPlayerBalance = playerBalance - playerBet;
+            // player.setAccountBalance(newPlayerBalance);
+            player.getCasinoAccount().setAccountBalance(newPlayerBalance);
             return;
         } else if (naturalPlayer == 21 && naturalDealer < 21) {
-            int winnings = (int) (playerBet * 1.5);
+            winnings = (int) (playerBet * 1.5);
             System.out.println("PLAYER HAS NATURAL, DEALER HAS " + sumDealer[0] + ". PLAYER WINS " +
                     winnings);
-            int newPlayerBalance = playerBalance + winnings;
-            player.setAccountBalance(newPlayerBalance);
+            newPlayerBalance = playerBalance + winnings;
+            // player.setAccountBalance(newPlayerBalance);
+            player.getCasinoAccount().setAccountBalance(newPlayerBalance);
             return;
         } else if (naturalPlayer < 21 && naturalDealer < 21) {
+            // PROCEED WITH GAMEPLAY:
             // ----- player's turn
             System.out.println("YOUR TURN" + "\n");
             while (sumPlayer[0] < 21) {
@@ -234,6 +255,10 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
                     break;
                 }
             }
+
+            // ACES (dealer)
+            dealerAceDecision();
+
             // ----- dealer's turn
             System.out.println("\n" + "DEALER'S TURN" + "\n");
             System.out.println("DEALER'S BOTTOM CARD: " + rankD2 + " " +
@@ -242,14 +267,14 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
                 while (sumDealer[0] < 17) {
                     System.out.println("DEALER HITS" + "\n");
                     hit(handDealer, deck, sumDealer);
+                    dealerAceDecision();
                 }
                 System.out.println("DEALER STANDS" + "\n");
             } else {
                 System.out.println("DEALER STANDS" + "\n");
             }
 
-            // TODO: if dealer has ace --- probably need to account for before now
-            // ACES
+            // ACES (player)
             int handSize = handPlayer.size();
             for (int a = 0; a < handSize; a++) {
                 Cards card = handPlayer.removeFirst();
@@ -273,25 +298,33 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             String dealerOutput = buildOutputString(handDealer, sumDealer);
             System.out.println(dealerOutput);
 
-            // ----- print winner
+            // ----- print winner and update account balance
             if (sumPlayer[0] <= 21 && sumDealer[0] <= 21) {
                 if (sumPlayer[0] > sumDealer[0]) {
                     System.out.println("\n" + "PLAYER WINS");
+                    winnings = (int) (playerBet * 1.5);
+                    newPlayerBalance = playerBalance + winnings;
+                    player.getCasinoAccount().setAccountBalance(newPlayerBalance);
                 }
                 if (sumPlayer[0] < sumDealer[0]) {
                     System.out.println("\n" + "DEALER WINS");
+                    newPlayerBalance = playerBalance - playerBet;
+                    player.getCasinoAccount().setAccountBalance(newPlayerBalance);
                 }
                 if (sumPlayer[0] == sumDealer[0]) {
                     System.out.println("\n" + "TIE");
                 }
             } else if (sumPlayer[0] <= 21 && sumDealer[0] > 21) {
                 System.out.println("\n" + "DEALER BUST - PLAYER WINS!" + "\n");
+                winnings = (int) (playerBet * 1.5);
+                newPlayerBalance = playerBalance + winnings;
+                player.getCasinoAccount().setAccountBalance(newPlayerBalance);
             } else if (sumPlayer[0] > 21 && sumDealer[0] <= 21) {
                 System.out.println("\n" + "PLAYER BUST - DEALER WINS!" + "\n");
+                newPlayerBalance = playerBalance - playerBet;
+                player.getCasinoAccount().setAccountBalance(newPlayerBalance);
             } else if (sumPlayer[0] > 21 && sumDealer[0] > 21) {
                 System.out.println("\n" + "PLAYER AND DEALER BUST" + "\n");
-
-                // TODO - update account balance at end - not already coded for, correct?
             }
         }
     }
