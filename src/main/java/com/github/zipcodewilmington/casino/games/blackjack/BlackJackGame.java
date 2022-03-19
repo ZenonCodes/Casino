@@ -31,9 +31,8 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
     Integer[] sumDealer = {0}; // TODO - clear at end???
 
     public static void main(String[] args) {
+        System.out.println("\n" + "WELCOME TO BLACKJACK" + "\n");
         BlackJackGame blackJackGame = new BlackJackGame();
-
-        // TODO assign players (and tests)
 
         // generate and deal deck
         ArrayDeque<Cards> deck = blackJackGame.generateBlackJackDeck();
@@ -49,14 +48,17 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         // if 1 person has 21 vs both vs neither
         // TODO - how to handle ACE??? -- maybe option to add 10 later???
         // ----- player's turn
+        System.out.println("YOUR TURN" + "\n");
         while (blackJackGame.sumPlayer[0] < 21) {
             String playerInput = getStringInput("HIT or STAND");
             if (playerInput.equals("HIT")) {
                 blackJackGame.hit(blackJackGame.handPlayer, deck, blackJackGame.sumPlayer);
             } else if (playerInput.equals("STAND")) {
+            break;
             }
         }
         // ----- dealer's turn
+        System.out.println("DEALER'S TURN" + "\n");
         // TODO - dealer reveals cards
         if (blackJackGame.sumDealer[0] < 17) {
             while (blackJackGame.sumDealer[0] < 17)
@@ -112,8 +114,8 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         Rank rankP2 = playerCard2.getRank();
         Suit suitP2 = playerCard2.getSuit();
         handDealer.addFirst(deck.removeFirst());
-        System.out.println("YOUR HAND: " + rankP1 + " " + suitP1 + ", " + rankP2 + " " + suitP2);
-        System.out.println("DEALER SHOWS: " + rankD1 + " " + suitD1);
+        System.out.println("YOUR HAND: " + rankP1 + " " + suitP1 + ", " + rankP2 + " " + suitP2 + "\n");
+        System.out.println("DEALER SHOWS: " + rankD1 + " " + suitD1 + "\n");
     }
 
     public void hit(ArrayDeque<Cards> handToHit, ArrayDeque<Cards> deck, Integer[] sumToAddTo) { // tested
