@@ -10,7 +10,6 @@ import com.github.zipcodewilmington.casino.cards.Deck;
 import com.github.zipcodewilmington.casino.cards.Rank;
 import com.github.zipcodewilmington.casino.cards.Suit;
 
-import javax.smartcardio.Card;
 import java.util.*;
 
 // ===== MVP
