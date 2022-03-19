@@ -14,7 +14,6 @@ import java.util.*;
 import static java.sql.DriverManager.println;
 
 public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
-    // TODO - 1 player vs computer
 
     Boolean isCardGame = true;
 
@@ -23,13 +22,6 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
     ArrayDeque<Cards> temporary = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handPlayer1 = new ArrayDeque<Cards>();
     ArrayDeque<Cards> handPlayer2 = new ArrayDeque<Cards>();
-    int gameStatus = 0; // do I actually need this? --- useful within gameplay???
-
-    public static void main(String[] args) { // I don't think I need a main method here as the game will be initiated in another class.
-        WarGame wargame = new WarGame();
-        wargame.run();
-        System.exit(0);
-    }
 
     // ============================= SUB-METHODS =============================
 
@@ -98,34 +90,28 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
             handPlayer1.addLast(player1Card);
             handPlayer1.addLast(player2Card);
             distributeTemporaryCards(handPlayer1);
-            System.out.println("Player 1: " + rank1 + " " + suit1); // rename players to account names
-            System.out.println("Player 2: " + rank2 + " " + suit2 + "\n"); // rename players to account names
-            System.out.println("Player 1 Wins This Round!" + "\n"); // rename players to account names
-            System.out.println("Player 1 Has " + handPlayer1.size() + " cards."); // rename players
-            // to account names
-            System.out.println("Player 2 Has " + handPlayer2.size() + " cards." + "\n"); // rename players
-            // to account names
+            System.out.println("Player 1: " + rank1 + " " + suit1);
+            System.out.println("COMPUTER: " + rank2 + " " + suit2 + "\n");
+            System.out.println("Player 1 Wins This Round!" + "\n");
+            System.out.println("Player 1 Has " + handPlayer1.size() + " cards.");
+            System.out.println("COMPUTER Has " + handPlayer2.size() + " cards." + "\n");
 
         } else if (tierCard1 < tierCard2) {
             handPlayer2.addLast(player1Card);
             handPlayer2.addLast(player2Card);
             distributeTemporaryCards(handPlayer2);
-            System.out.println("Player 1: " + rank1 + " " + suit1); // rename players to account names
-            System.out.println("Player 2: " + rank2 + " " + suit2 + "\n"); // rename players to account names
-            System.out.println("Player 2 Wins This Round!" + "\n"); // rename players to account names
-            System.out.println("Player 1 Has " + handPlayer1.size() + " cards."); // rename players
-            // to account names
-            System.out.println("Player 2 Has " + handPlayer2.size() + " cards." + "\n"); // rename players
-            // to account names
+            System.out.println("Player 1: " + rank1 + " " + suit1);
+            System.out.println("COMPUTER: " + rank2 + " " + suit2 + "\n");
+            System.out.println("COMPUTER Wins This Round!" + "\n");
+            System.out.println("Player 1 Has " + handPlayer1.size() + " cards.");
+            System.out.println("COMPUTER Has " + handPlayer2.size() + " cards." + "\n");
 
         } else if (tierCard1 == tierCard2) {
-            System.out.println("Player 1: " + rank1 + " " + suit1); // rename players to account names
-            System.out.println("Player 2: " + rank2 + " " + suit2 + "\n"); // rename players to account names
+            System.out.println("Player 1: " + rank1 + " " + suit1);
+            System.out.println("COMPUTER: " + rank2 + " " + suit2 + "\n");
             if (handPlayer1.size() > 0 && handPlayer2.size() == 0) {
-                gameStatus = 1;
                 return;
             } else if (handPlayer1.size() == 0 && handPlayer2.size() > 0) {
-                gameStatus = 1;
                 return;
             } else if (handPlayer1.size() > 3 && handPlayer2.size() > 3) {
                 System.out.println("WAR!" + "\n");
@@ -195,46 +181,29 @@ public class WarGame implements GameInterface<WarPlayer> { // NON-GAMBLING
 
     @Override
     public void run() {
-        while (gameStatus == 0) { // do I actually need this? -- useful within gameplay???
-            // assign players
-            String player1 = "PLAYER1"; // TODO - work on this
-            String player2 = "PLAYER2"; // TODO - work on this
+        // generate deck and deal cards
+        ArrayDeque<Cards> deck = generateWarDeck();
+        deal(deck);
 
-            // generate deck and deal cards
-            ArrayDeque<Cards> deck = generateWarDeck();
-            deal(deck);
-
-            // gameplay
-            while (handPlayer1.size() < 52 && handPlayer2.size() < 52 && gameStatus == 0) {
-                String player1Input = getStringInput("Player 1: Input FLIP to flip the next card " +
-                        "or QUIT to exit the game.");
-                String player2Input = getStringInput("Player 2: Input FLIP to flip the next card " +
-                        "or QUIT to exit the game.");
-                if (player1Input.equals("FLIP") && player2Input.equals("FLIP")) {
-                    // do nothing/continue
-                } else if (player1Input.equals("QUIT") || player2Input.equals("QUIT")) {
-                    gameStatus = 1;
-                    break;
-                }
-                Cards player1Card = handPlayer1.removeFirst();
-                Cards player2Card = handPlayer2.removeFirst();
-                compareAndRedistribute(player1Card, player2Card);
+        // gameplay
+        while (handPlayer1.size() < 52 && handPlayer2.size() < 52) {
+            String playerInput = getStringInput("Input FLIP to flip the next card " +
+                    "or QUIT to exit the game.");
+            if (playerInput.equals("FLIP")) {
+                // do nothing/continue
+            } else if (playerInput.equals("QUIT")) {
+                return;
             }
-
-            // declare a winner
-            if (handPlayer1.size() == 0) {
-                System.out.println("PLAYER 2 WINS!"); // TODO - change this to reflect username
-                gameStatus = 1;
-            } else if (handPlayer2.size() == 0) {
-                System.out.println("PLAYER 2 WINS!"); // TODO - change this to reflect username
-                gameStatus = 1;
-            }
+            Cards player1Card = handPlayer1.removeFirst();
+            Cards player2Card = handPlayer2.removeFirst();
+            compareAndRedistribute(player1Card, player2Card);
         }
-        temporary.clear();
-        handPlayer1.clear();
-        handPlayer2.clear();
-        System.exit(0);
-        // return;  // TODO - fix this so it redirects to game selection or handle in other clas??
-    }
 
+        // declare a winner
+        if (handPlayer1.size() == 0) {
+            System.out.println("COMPUTER WINS!");
+        } else if (handPlayer2.size() == 0) {
+            System.out.println("PLAYER WINS!");
+        }
+    }
 }
