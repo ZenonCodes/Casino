@@ -156,7 +156,7 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         return isNatural;
     }
 
-    public String checkForAce(Cards cardToBeChecked) {
+    public String checkForAce(Cards cardToBeChecked) { // tested
         String output = "";
         int tierCard = cardToBeChecked.getTier();
         if (tierCard == 13) { // ACE
@@ -165,6 +165,20 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
             output = "NO";
         }
         return output;
+    }
+
+    public void dealerAceDecision() {
+        int handSizeDealer = handDealer.size();
+        for (int a = 0; a < handSizeDealer; a++) {
+            Cards card = handDealer.removeFirst();
+            String isAce = checkForAce(card);
+            handDealer.addLast(card);
+            if (isAce.equals("YES")) {
+                if (sumDealer[0] + 10 <= 21 && sumDealer[0] + 10 >= 17) {
+                    sumDealer[0] += 10;
+                }
+            }
+        }
     }
 
     @Override
@@ -240,6 +254,10 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
                     break;
                 }
             }
+
+            // ACES (dealer)
+            dealerAceDecision();
+
             // ----- dealer's turn
             System.out.println("\n" + "DEALER'S TURN" + "\n");
             System.out.println("DEALER'S BOTTOM CARD: " + rankD2 + " " +
@@ -248,14 +266,14 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
                 while (sumDealer[0] < 17) {
                     System.out.println("DEALER HITS" + "\n");
                     hit(handDealer, deck, sumDealer);
+                    dealerAceDecision();
                 }
                 System.out.println("DEALER STANDS" + "\n");
             } else {
                 System.out.println("DEALER STANDS" + "\n");
             }
 
-            // TODO: if dealer has ace --- probably need to account for before now
-            // ACES
+            // ACES (player)
             int handSize = handPlayer.size();
             for (int a = 0; a < handSize; a++) {
                 Cards card = handPlayer.removeFirst();
