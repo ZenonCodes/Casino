@@ -17,6 +17,7 @@ import java.util.*;
 //--------- additional wagers
 //--------- splitting pairs
 //--------- doubling down
+// ===== TODO: account balance doesn't seem to carry over between multiple games
 
 public class BlackJackGame extends WagingGame implements GameInterface<BlackJackPlayer> {
     Boolean isCardGame = true;
