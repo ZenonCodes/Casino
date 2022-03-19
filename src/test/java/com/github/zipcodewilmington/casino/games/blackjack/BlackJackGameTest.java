@@ -160,21 +160,61 @@ class BlackJackGameTest {
     void buildOutputString() {
         // Given
         BlackJackGame blackJackGame = new BlackJackGame();
-        ArrayDeque<Cards> handPlayerTest = new ArrayDeque<Cards>();
-        Integer[] sumPlayerTest = {0};
+        ArrayDeque<Cards> handDealerTest = new ArrayDeque<Cards>();
+        Integer[] sumDealerTest = {0};
         Cards cardP1 = new Cards(Rank.JACK, Suit.HEARTS, 10);
         Cards cardP2 = new Cards(Rank.KING, Suit.HEARTS, 12);
         Cards cardP3 = new Cards(Rank.ACE, Suit.HEARTS, 13);
-        String expectedString = "PLAYER HAS JACK HEARTS, KING HEARTS, ACE HEARTS, TOTAL: 21";
+        String expectedString = "DEALER HAS JACK HEARTS, KING HEARTS, ACE HEARTS, TOTAL: 21";
         // WHEN
-        handPlayerTest.add(cardP1);
-        blackJackGame.addCardToSum(cardP1, sumPlayerTest);
-        handPlayerTest.add(cardP2);
-        blackJackGame.addCardToSum(cardP2, sumPlayerTest);
-        handPlayerTest.add(cardP3);
-        blackJackGame.addCardToSum(cardP3, sumPlayerTest);
-        String actualString = blackJackGame.buildOutputString(handPlayerTest, sumPlayerTest);
+        handDealerTest.add(cardP1);
+        blackJackGame.addCardToSum(cardP1, sumDealerTest);
+        handDealerTest.add(cardP2);
+        blackJackGame.addCardToSum(cardP2, sumDealerTest);
+        handDealerTest.add(cardP3);
+        blackJackGame.addCardToSum(cardP3, sumDealerTest);
+        String actualString = blackJackGame.buildOutputString(handDealerTest, sumDealerTest);
         // THEN
         Assert.assertEquals(expectedString, actualString);
+    }
+
+    @Test
+    void checkForNatural() {
+        // Given
+        BlackJackGame blackJackGame = new BlackJackGame();
+        ArrayDeque<Cards> handPlayerTestNatural1 = new ArrayDeque<Cards>();
+        ArrayDeque<Cards> handPlayerTestNatural2 = new ArrayDeque<Cards>();
+        Cards cardP11 = new Cards(Rank.JACK, Suit.HEARTS, 10);
+        Cards cardP12 = new Cards(Rank.ACE, Suit.HEARTS, 13);
+        Cards cardP21 = new Cards(Rank.SEVEN, Suit.HEARTS, 6);
+        Cards cardP22 = new Cards(Rank.ACE, Suit.HEARTS, 13);
+        int expected1 = 21;
+        int expected2 = 18;
+        // WHEN
+        handPlayerTestNatural1.add(cardP11);
+        handPlayerTestNatural1.add(cardP12);
+        handPlayerTestNatural2.add(cardP21);
+        handPlayerTestNatural2.add(cardP22);
+        int actual1 = blackJackGame.checkForNatural(handPlayerTestNatural1);
+        int actual2 = blackJackGame.checkForNatural(handPlayerTestNatural2);
+        // THEN
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+    }
+
+    @Test
+    void checkForAceTest() {
+        // Given
+        BlackJackGame blackJackGame = new BlackJackGame();
+        Cards card1 = new Cards(Rank.JACK, Suit.HEARTS, 10);
+        Cards card2 = new Cards(Rank.ACE, Suit.HEARTS, 13);
+        String expected1 = "NO";
+        String expected2 = "YES";
+        // WHEN
+        String actual1 = blackJackGame.checkForAce(card1);
+        String actual2 = blackJackGame.checkForAce(card2);
+        // THEN
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
     }
 }
