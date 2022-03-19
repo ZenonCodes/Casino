@@ -71,4 +71,44 @@ class KlondikeGameTest {
         game.getKlondikeHand();
         roll.clear();
     }
+
+    @Test
+    void isTwoPairTest() {
+        ///given
+        KlondikeGame game = new KlondikeGame();
+        ArrayList<Integer> newArr = new ArrayList<>();
+        //when
+        newArr.add(2);
+        newArr.add(3);
+        newArr.add(3);
+        newArr.add(2);
+        newArr.add(6);
+
+        //then
+        Assert.assertTrue(game.isTwoPair(newArr));
+    }
+
+    @Test
+    void getPlayerKlondikeHandTest() {
+        KlondikeGame game = new KlondikeGame();
+        ArrayList<Integer> roll = game.getHouseRoll();
+        HashMap<String, Integer> expected = game.evaluatePlayerHand();
+        game.getPlayerKlondikeHand();
+        roll.clear();
+    }
+
+    @Test
+    void getWinner() {
+        //given
+        KlondikeGame game = new KlondikeGame();
+        game.houseHandRank = 5;
+        game.playerHandRank = 4;
+        String expected = "HOUSE WINS!!!!";
+        //when
+        String actual = game.getWinner();
+        //then
+        Assert.assertEquals(actual, expected);
+    }
+
+
 }
