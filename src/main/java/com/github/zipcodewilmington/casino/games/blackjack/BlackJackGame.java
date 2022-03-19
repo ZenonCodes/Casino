@@ -73,7 +73,7 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         // declare winner
         // ----- print hands and totals
         String playerOutput = blackJackGame.buildOutputString(blackJackGame.handPlayer,
-                blackJackGame.sumPlayer); // TODO - test
+                blackJackGame.sumPlayer);
         System.out.println(playerOutput);
         String dealerOutput = blackJackGame.buildOutputString(blackJackGame.handDealer,
                 blackJackGame.sumDealer);
