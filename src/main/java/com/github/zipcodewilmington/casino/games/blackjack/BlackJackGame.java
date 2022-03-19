@@ -50,12 +50,11 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         // TODO - how to handle ACE??? -- maybe option to add 10 later???
         String playerInput = getStringInput("HIT or STAND");
         if (playerInput.equals("HIT")) {
-            blackJackGame.hit(blackJackGame.handPlayer, deck);
+            blackJackGame.hit(blackJackGame.handPlayer, deck, blackJackGame.sumPlayer);
         }
         // if hit vs if stand
         // It is up to each individual player if an ace is worth 1 or 11. Face cards are 10 and any
         // other card is its pip value.
-        // TODO - put sum method up here
     }
 
     // =============== SUB-METHODS ===============
@@ -107,12 +106,13 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         System.out.println("DEALER SHOWS: " + rankD1 + " " + suitD1);
     }
 
-    public void hit(ArrayDeque<Cards> handToHit, ArrayDeque<Cards> deck) { // tested
+    public void hit(ArrayDeque<Cards> handToHit, ArrayDeque<Cards> deck, Integer[] sumToAddTo) { // tested
         handToHit.addFirst(deck.removeFirst());
         Cards newCard = handToHit.peekFirst();
         Rank rankNewCard = newCard.getRank();
         Suit suitNewCard = newCard.getSuit();
         System.out.println("NEW CARD: " + rankNewCard + " " + suitNewCard);
+        addCardToSum(newCard, sumToAddTo);
     }
 
     public void addCardToSum(Cards cardToBeAdded, Integer[] sumToAddTo) { // tested
@@ -126,7 +126,7 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
         }
     }
 
-    public void sumStartingCards() {
+    public void sumStartingCards() { // tested
         Cards playerCard1 = handPlayer.peekFirst();
         Cards playerCard2 = handPlayer.peekLast();
         Cards dealerCard1 = handDealer.peekFirst();
