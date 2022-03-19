@@ -114,7 +114,11 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
 
     public String buildOutputString(ArrayDeque<Cards> handToConvert, Integer[] sum) {
         StringBuilder sb = new StringBuilder();
-        sb.append("PLAYER HAS ");
+        if (handToConvert.equals(handPlayer)) {
+            sb.append("PLAYER HAS ");
+        } else {
+            sb.append("DEALER HAS ");
+        }
         int size = handToConvert.size();
         for (int i = 0; i < size; i++) {
             Cards card = handToConvert.removeFirst();
@@ -129,16 +133,23 @@ public class BlackJackGame extends WagingGame implements GameInterface<BlackJack
 
     public int checkForNatural(ArrayDeque<Cards> handToBeChecked) { // tested
         int isNatural = 0;
-        for (int c = 1; c <=2; c++) {
-            Cards card = handToBeChecked.removeFirst();
-            int tier = card.getTier();
-            if (tier <= 8) { // CARDS 2-9
-                isNatural += (tier + 1);
-            } else if (tier > 8 && tier < 13) { // CARDS 10-KING
-                isNatural += 10;
-            } else if (tier == 13) { // ACE
-                isNatural += 11;
-            }
+        Cards card1 = handToBeChecked.peekFirst();
+        int tier1 = card1.getTier();
+        if (tier1 <= 8) { // CARDS 2-9
+            isNatural += (tier1 + 1);
+        } else if (tier1 > 8 && tier1 < 13) { // CARDS 10-KING
+            isNatural += 10;
+        } else if (tier1 == 13) { // ACE
+            isNatural += 11;
+        }
+        Cards card2 = handToBeChecked.peekLast();
+        int tier2 = card2.getTier();
+        if (tier2 <= 8) { // CARDS 2-9
+            isNatural += (tier2 + 1);
+        } else if (tier2 > 8 && tier2 < 13) { // CARDS 10-KING
+            isNatural += 10;
+        } else if (tier2 == 13) { // ACE
+            isNatural += 11;
         }
         return isNatural;
     }
