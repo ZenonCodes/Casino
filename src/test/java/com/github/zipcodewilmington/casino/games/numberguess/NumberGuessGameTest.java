@@ -6,17 +6,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NumberGuessGameTest {
-    private static final int number = 10;
-    @Test
-    void numberGuessgameTest() {
-        //given
 
+    @Test
+    void findWinnerTest() {
+        //given
+        NumberGuessGame game = new NumberGuessGame();
 
         //when
-
+        String expected = game.findWinner(10, 10);
 
         //then
-
+        String actual = "Jackpot!!!!!";
+        Assert.assertEquals(expected, actual);
 
     }
 

@@ -15,7 +15,6 @@ public class Dice {
      for (int i = 0; i < numDice; i++) {
         roll.add(i, (int) Math.floor(Math.random() * 6 + 1));
     }
-        System.out.println(roll);
         return roll;
     }
 
