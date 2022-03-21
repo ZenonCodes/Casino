@@ -7,7 +7,7 @@ import com.github.zipcodewilmington.casino.WagingPlayer;
 public class CrapsPlayer extends WagingPlayer {
     @Override
     public CasinoAccount getCasinoAccount() {
-        return null;
+        return this.casinoAccount;
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CrapsTest {
-    Craps craps;
+    CrapsGame craps;
     Player player;
 
 
