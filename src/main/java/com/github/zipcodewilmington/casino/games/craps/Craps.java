@@ -2,14 +2,21 @@ package com.github.zipcodewilmington.casino.games.craps;
 
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.WagingGame;
+import com.github.zipcodewilmington.casino.WagingPlayer;
 import com.github.zipcodewilmington.casino.dice.Dice;
+
 
 import java.util.List;
 import java.util.Scanner;
 
 public class Craps extends WagingGame implements GameInterface<CrapsPlayer> {
+    static WagingPlayer player = new CrapsPlayer();
 
     public static void main(String[] args) {
+
+        System.out.println("You have " + player.getAccountBalance() + " to bet.\n");
+        player.setBet();
+        getWagers(player.getBet());
         System.out.println("\nWelcome to the Craps Table!");
         play();
         playGame();
